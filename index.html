@@ -1,0 +1,1892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shehroz Mumtaz, AI QA</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Muhammad Shehroz Mumtaz, AI QA Engineer. Test automation with Playwright and Selenium, API testing, and testing of LLM and agentic workflows.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Muhammad Shehroz Mumtaz, AI QA Engineer">
+<meta property="og:description" content="Test automation with Playwright and Selenium, API testing, and testing of LLM and agentic workflows. Play Regression Run at the bottom.">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0C1220">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23121A2B'/%3E%3Ctext x='16' y='21' font-family='Arial' font-weight='800' font-size='13' text-anchor='middle' fill='%23FFE14A'%3ESM%3C/text%3E%3C/svg%3E">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>
+/* Layout: the page reads as a test report. Cool engineering paper, navy ink, and one bold move: a highlighter yellow used the way testers mark defects on printed scripts. */
+:root {
+  --paper: #EEF1F5;
+  --paper-2: #E3E8EF;
+  --card: #F9FAFC;
+  --ink: #121A2B;
+  --ink-2: #47526A;
+  --ink-3: #5B6680;
+  --line: #CCD4E0;
+  --line-strong: #A9B4C6;
+  --marker: #FFE14A;
+  --marker-ink: #121A2B;
+  --hl-h: 0.42em;
+  --hl-ink: inherit;
+  --defect: #C9312F;
+  --pass: #0D6644;
+  --flaky: #9A6100;
+  --panel: #0F1626;
+  --panel-2: #172036;
+  --panel-ink: #D9E0EC;
+  --panel-dim: #8391AA;
+  --panel-pass: #4FD69E;
+  --panel-fail: #FF7A75;
+  --panel-flaky: #F4C152;
+  --shadow: 0 1px 0 rgba(18,26,43,.04), 0 12px 32px -18px rgba(18,26,43,.28);
+
+  --font-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.1875rem;
+  --step-2: 1.5rem;
+  --step-3: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
+  --step-4: clamp(2.5rem, 1.2rem + 5.6vw, 5.75rem);
+
+  --gutter: max(clamp(16px, 4vw, 40px), env(safe-area-inset-left, 0px));
+  --gutter-r: max(clamp(16px, 4vw, 40px), env(safe-area-inset-right, 0px));
+  --radius: 10px;
+  --header-h: 60px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0C1220;
+    --paper-2: #09101C;
+    --card: #121A2C;
+    --ink: #E7EBF2;
+    --ink-2: #A9B3C6;
+    --ink-3: #8592AA;
+    --line: #212C42;
+    --line-strong: #34415C;
+    --marker: #FFE14A;
+    --marker-ink: #121A2B;
+    --hl-h: 1.08em;
+    --hl-ink: #121A2B;
+    --defect: #FF6F6A;
+    --pass: #45D49B;
+    --flaky: #F2B84B;
+    --panel: #070C17;
+    --panel-2: #0E1526;
+    --shadow: 0 1px 0 rgba(0,0,0,.2), 0 16px 40px -20px rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0C1220;
+  --paper-2: #09101C;
+  --card: #121A2C;
+  --ink: #E7EBF2;
+  --ink-2: #A9B3C6;
+  --ink-3: #8592AA;
+  --line: #212C42;
+  --line-strong: #34415C;
+  --marker: #FFE14A;
+  --marker-ink: #121A2B;
+  --hl-h: 1.08em;
+  --hl-ink: #121A2B;
+  --defect: #FF6F6A;
+  --pass: #45D49B;
+  --flaky: #F2B84B;
+  --panel: #070C17;
+  --panel-2: #0E1526;
+  --shadow: 0 1px 0 rgba(0,0,0,.2), 0 16px 40px -20px rgba(0,0,0,.7);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 60; background: var(--paper);
+}
+a { color: inherit; }
+::selection { background: var(--marker); color: var(--marker-ink); }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
+.skip {
+  position: absolute; left: 12px; top: -60px; z-index: 100; background: var(--ink); color: var(--paper);
+  padding: 10px 14px; border-radius: 6px; text-decoration: none; font-weight: 600;
+}
+.skip:focus { top: calc(10px + env(safe-area-inset-top, 0px)); }
+.wrap { max-width: 1200px; margin-inline: auto; padding-left: var(--gutter); padding-right: var(--gutter-r); }
+.mono { font-family: var(--font-mono); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* highlighter: the page's one bold move */
+.hl {
+  background-image: linear-gradient(transparent 0, transparent 100%), linear-gradient(var(--marker), var(--marker));
+  background-repeat: no-repeat;
+  background-position: 0 0, 0 88%;
+  background-size: 100% 100%, 100% var(--hl-h);
+  color: var(--hl-ink);
+  padding-inline: 0.06em;
+  margin-inline: -0.06em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hl.swipe { animation: swipe 0.9s cubic-bezier(.6,.05,.25,1) 0.5s both; }
+  @keyframes swipe { from { background-size: 100% 100%, 0% var(--hl-h); } to { background-size: 100% 100%, 100% var(--hl-h); } }
+}
+
+/* ---------- header ---------- */
+.site-header {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50;
+  background: color-mix(in srgb, var(--paper) 86%, transparent);
+  backdrop-filter: saturate(1.4) blur(10px); -webkit-backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.header-row { height: var(--header-h); display: flex; align-items: center; gap: 16px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; letter-spacing: -0.01em; }
+.brand-mark {
+  width: 30px; height: 30px; border-radius: 7px; display: grid; place-items: center;
+  background: var(--ink); color: var(--paper); font-family: var(--font-display); font-stretch: 120%; font-weight: 800; font-size: 13px;
+}
+.nav { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+.nav a {
+  text-decoration: none; color: var(--ink-2); font-size: 0.9rem; padding: 6px 10px; border-radius: 6px;
+  transition: color .15s, background-color .15s;
+}
+.nav a:hover { color: var(--ink); background: var(--paper-2); }
+.nav a[aria-current="true"] { color: var(--ink); background-image: linear-gradient(var(--marker), var(--marker)); background-repeat: no-repeat; background-position: 10px 82%; background-size: calc(100% - 20px) 5px; }
+.header-tools { display: flex; align-items: center; gap: 8px; }
+.chip-btn {
+  display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 11px; border-radius: 999px;
+  border: 1px solid var(--line-strong); background: var(--card); color: var(--ink); font: 500 0.8rem var(--font-mono);
+  cursor: pointer; white-space: nowrap;
+}
+.chip-btn:hover { border-color: var(--ink-3); }
+.chip-btn svg { width: 16px; height: 16px; flex: none; }
+.icon-btn { width: 34px; padding: 0; justify-content: center; }
+.bug-count[data-done="true"] { background: var(--marker); color: var(--marker-ink); border-color: transparent; }
+.menu-btn { display: none; }
+.mobile-nav { display: none; }
+@media (max-width: 920px) {
+  .nav { display: none; }
+  .header-tools { margin-left: auto; }
+  .menu-btn { display: inline-flex; }
+  .mobile-nav:not([hidden]) {
+    display: grid; gap: 2px; padding: 8px 0 14px; border-top: 1px solid var(--line);
+  }
+  .mobile-nav a { text-decoration: none; padding: 10px 4px; font-weight: 500; border-bottom: 1px dashed var(--line); }
+}
+@media (max-width: 420px) { .bug-count .label-long { display: none; } }
+
+/* ---------- section scaffolding ---------- */
+section { scroll-margin-top: calc(var(--header-h) + 12px); }
+.section { padding-block: clamp(64px, 9vw, 120px); border-top: 1px solid var(--line); }
+.section-head { display: grid; gap: 12px; margin-bottom: clamp(28px, 4vw, 48px); max-width: 760px; }
+.spec {
+  display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font: 500 var(--step--1) var(--font-mono);
+  color: var(--ink-3); letter-spacing: 0.02em;
+}
+.spec .file { color: var(--ink-2); }
+.spec .count { display: inline-flex; align-items: center; gap: 6px; color: var(--pass); }
+.spec .count::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; letter-spacing: -0.02em; line-height: 1.02; }
+h2 { font-size: var(--step-3); font-weight: 800; font-stretch: 112%; }
+h3 { font-size: var(--step-1); font-weight: 700; font-stretch: 105%; letter-spacing: -0.01em; line-height: 1.2; }
+.lede { color: var(--ink-2); font-size: var(--step-1); line-height: 1.55; margin: 0; max-width: 62ch; }
+p { margin: 0; }
+
+/* ---------- hero ---------- */
+.hero { padding-block: clamp(40px, 7vw, 96px) clamp(48px, 7vw, 88px); position: relative; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
+@media (max-width: 980px) { .hero-grid { grid-template-columns: minmax(0, 1fr); } }
+.eyebrow { font: 500 var(--step--1) var(--font-mono); color: var(--ink-2); letter-spacing: 0.02em; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; }
+.status-dot { display: inline-flex; align-items: center; gap: 8px; color: var(--pass); }
+.status-dot::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 4px color-mix(in srgb, var(--pass) 18%, transparent); }
+.hero h1 { margin-top: 18px; font-size: var(--step-4); font-weight: 900; font-stretch: 118%; letter-spacing: -0.035em; line-height: 0.92; }
+.hero h1 .first { display: block; font-size: 0.36em; font-weight: 600; font-stretch: 100%; letter-spacing: -0.01em; color: var(--ink-2); margin-bottom: 0.25em; line-height: 1; }
+.thesis { margin-top: 26px; font-family: var(--font-display); font-stretch: 100%; font-weight: 600; font-size: clamp(1.35rem, 1rem + 1.3vw, 1.9rem); line-height: 1.2; letter-spacing: -0.015em; max-width: 22ch; text-wrap: balance; }
+.hero .lede { margin-top: 18px; font-size: 1.05rem; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; height: 46px; padding: 0 20px; border-radius: 8px;
+  font: 600 0.95rem var(--font-body); text-decoration: none; cursor: pointer; border: 1px solid transparent;
+  transition: transform .15s ease, background-color .15s, border-color .15s;
+}
+.btn svg { width: 18px; height: 18px; }
+.btn-primary { background: var(--ink); color: var(--paper); }
+.btn-primary:hover { transform: translateY(-1px); }
+.btn-ghost { border-color: var(--line-strong); color: var(--ink); background: transparent; }
+.btn-ghost:hover { border-color: var(--ink); }
+.btn-marker { background: var(--marker); color: var(--marker-ink); }
+.btn-marker:hover { transform: translateY(-1px); }
+.facts { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 34px; padding-top: 22px; border-top: 1px dashed var(--line-strong); }
+.fact { display: grid; gap: 2px; }
+.fact b { font-family: var(--font-display); font-stretch: 112%; font-weight: 800; font-size: 1.6rem; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.fact span { font-size: var(--step--1); color: var(--ink-3); }
+
+/* test-run console */
+.runner {
+  position: relative; background: var(--panel); color: var(--panel-ink); border-radius: 14px; overflow: hidden;
+  box-shadow: var(--shadow); font: 400 0.82rem/1.75 var(--font-mono); border: 1px solid color-mix(in srgb, var(--panel-ink) 10%, transparent);
+  min-width: 0;
+}
+.runner-bar { display: flex; align-items: center; gap: 10px; padding: 11px 14px; background: var(--panel-2); border-bottom: 1px solid color-mix(in srgb, var(--panel-ink) 8%, transparent); }
+.runner-bar .title { color: var(--panel-dim); font-size: 0.76rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.runner-bar .rerun {
+  margin-left: auto; display: inline-flex; align-items: center; gap: 6px; background: transparent; color: var(--panel-ink);
+  border: 1px solid color-mix(in srgb, var(--panel-ink) 22%, transparent); border-radius: 6px; padding: 3px 9px; font: 500 0.74rem var(--font-mono); cursor: pointer;
+}
+.runner-bar .rerun:hover { border-color: var(--panel-ink); }
+.runner-bar .rerun:focus-visible { outline-color: var(--panel-ink); }
+.dots { display: inline-flex; gap: 6px; flex: none; }
+.dots i { width: 10px; height: 10px; border-radius: 50%; background: color-mix(in srgb, var(--panel-ink) 22%, transparent); }
+.runner-body { padding: 16px 16px 18px; overflow-x: auto; }
+.runner-body ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; }
+.runner-body li { white-space: nowrap; display: flex; gap: 10px; align-items: baseline; transition: opacity .25s ease, transform .25s ease; }
+.runner-body .cmd { color: var(--panel-ink); }
+.runner-body .cmd .p { color: var(--panel-pass); }
+.runner-body .dim { color: var(--panel-dim); }
+.tag { display: inline-block; min-width: 4.6em; text-align: center; padding: 0 6px; border-radius: 4px; font-weight: 600; font-size: 0.72rem; line-height: 1.6; letter-spacing: 0.04em; }
+.tag-pass { color: var(--panel); background: var(--panel-pass); }
+.tag-flaky { color: var(--panel); background: var(--panel-flaky); }
+.tag-fail { color: var(--panel); background: var(--panel-fail); }
+.runner-body .t { color: var(--panel-dim); font-size: 0.74rem; }
+.runner-body .sum { padding-right: 28px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed color-mix(in srgb, var(--panel-ink) 18%, transparent); color: var(--panel-ink); }
+.runner-body .sum b { color: var(--panel-pass); font-weight: 600; }
+@media (max-width: 640px) {
+  .runner { font-size: 0.76rem; }
+  .runner-body li { white-space: normal; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 10px; }
+  .runner-body li.cmd, .runner-body li.dim, .runner-body li.sum { display: block; }
+  .runner-body li .t { display: none; }
+}
+.runner.replaying li.pending { opacity: 0; transform: translateY(4px); }
+.cursor-blink { display: inline-block; width: 0.6em; height: 1.1em; background: var(--panel-ink); vertical-align: -0.2em; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .cursor-blink { animation: none; } }
+
+/* marquee */
+.ticker { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); overflow: hidden; background: var(--paper-2); }
+.ticker-track { display: flex; gap: 40px; width: max-content; padding-block: 14px; font: 500 0.82rem var(--font-mono); color: var(--ink-2); }
+.ticker-track span { display: inline-flex; align-items: center; gap: 40px; white-space: nowrap; }
+.ticker-track span::after { content: ""; width: 5px; height: 5px; background: var(--ink-3); border-radius: 1px; transform: rotate(45deg); }
+@media (prefers-reduced-motion: no-preference) {
+  .ticker-track { animation: tick 46s linear infinite; }
+  .ticker:hover .ticker-track { animation-play-state: paused; }
+  @keyframes tick { to { transform: translateX(-50%); } }
+}
+
+/* ---------- about ---------- */
+.about-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 80px); align-items: start; }
+@media (max-width: 900px) { .about-grid { grid-template-columns: minmax(0, 1fr); } }
+.prose { display: grid; gap: 18px; font-size: 1.08rem; color: var(--ink-2); max-width: 62ch; }
+.prose strong { color: var(--ink); font-weight: 600; }
+.stat-sheet { border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--card); overflow: hidden; }
+.stat-sheet header { display: flex; justify-content: space-between; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); font: 500 var(--step--1) var(--font-mono); color: var(--ink-3); }
+.stat-sheet dl { margin: 0; display: grid; grid-template-columns: 1fr 1fr; }
+.stat-sheet dl > div { padding: 18px 16px; border-bottom: 1px solid var(--line); display: grid; gap: 4px; }
+.stat-sheet dl > div:nth-child(odd) { border-right: 1px solid var(--line); }
+.stat-sheet dl > div:nth-last-child(-n+2) { border-bottom: 0; }
+.stat-sheet dt { font-size: var(--step--1); color: var(--ink-3); order: 2; }
+.stat-sheet dd { margin: 0; font-family: var(--font-display); font-stretch: 115%; font-weight: 800; font-size: 2rem; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.clients { padding: 14px 16px; border-top: 1px solid var(--line); display: grid; gap: 8px; }
+.clients p { font: 500 var(--step--1) var(--font-mono); color: var(--ink-3); }
+.clients ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; font-family: var(--font-display); font-weight: 700; font-stretch: 110%; font-size: 1.05rem; letter-spacing: -0.01em; }
+
+/* ---------- experience ---------- */
+.releases { list-style: none; margin: 0; padding: 0; display: grid; }
+.release { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: clamp(16px, 4vw, 48px); padding-block: 30px; border-top: 1px solid var(--line); position: relative; }
+.release:first-child { border-top: 0; padding-top: 0; }
+@media (max-width: 720px) { .release { grid-template-columns: minmax(0, 1fr); gap: 10px; } }
+.release-meta { display: grid; gap: 6px; align-content: start; font-family: var(--font-mono); font-size: var(--step--1); color: var(--ink-3); }
+@media (max-width: 720px) { .release-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; } }
+.version { justify-self: start; font-weight: 600; color: var(--ink); border: 1px solid var(--line-strong); border-radius: 5px; padding: 1px 8px; background: var(--card); }
+.release.latest .version { background: var(--marker); color: var(--marker-ink); border-color: transparent; }
+.release-body { display: grid; gap: 12px; min-width: 0; }
+.release-body h3 { font-size: clamp(1.2rem, 1rem + 0.8vw, 1.5rem); }
+.release-body .org { color: var(--ink-2); font-weight: 500; }
+.release-body ul:not(.tags) { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; color: var(--ink-2); max-width: 70ch; }
+.release-body li::marker { color: var(--ink-3); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 0; }
+.tags li { font: 500 0.75rem var(--font-mono); color: var(--ink-2); border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px; background: var(--card); }
+
+/* ---------- work ---------- */
+.work-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 860px) { .work-grid { grid-template-columns: minmax(0, 1fr); } }
+.case { border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--card); padding: clamp(20px, 2.6vw, 28px); display: grid; gap: 14px; align-content: start; min-width: 0; }
+.case-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; font: 500 0.75rem var(--font-mono); color: var(--ink-3); }
+.case-top .kind { text-transform: uppercase; letter-spacing: 0.08em; }
+.case h3 { font-size: clamp(1.2rem, 1rem + 0.7vw, 1.45rem); }
+.case p { color: var(--ink-2); }
+.case .role { font-size: 0.92rem; color: var(--ink); border-left: 3px solid var(--marker); padding-left: 12px; }
+.case .role b { font-weight: 600; }
+.flow { list-style: none; margin: 4px 0 0; padding: 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; background: var(--paper-2); border-radius: 8px; counter-reset: stage; }
+.flow li { display: inline-flex; align-items: center; font: 500 0.74rem var(--font-mono); color: var(--ink); counter-increment: stage; }
+.flow li span { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line-strong); background: var(--card); padding: 4px 9px 4px 5px; border-radius: 6px; white-space: nowrap; }
+.flow li span::before { content: counter(stage); display: inline-grid; place-items: center; width: 17px; height: 17px; border-radius: 4px; background: var(--paper-2); color: var(--ink-2); font-size: 0.66rem; font-weight: 600; }
+.flow li.mine span { background: var(--marker); color: var(--marker-ink); border-color: transparent; }
+.flow li.mine span::before { background: color-mix(in srgb, var(--marker-ink) 14%, transparent); color: var(--marker-ink); }
+.side-list { margin-top: 28px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+@media (max-width: 1000px) { .side-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .side-list { grid-template-columns: minmax(0, 1fr); } }
+.side { padding: 18px; display: grid; gap: 6px; align-content: start; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 0 -1px -1px 0; }
+.side .k { font: 500 0.72rem var(--font-mono); color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; }
+.side h3 { font-size: 1.02rem; }
+.side p { font-size: 0.9rem; color: var(--ink-2); }
+
+/* ---------- lab ---------- */
+.lab { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (max-width: 960px) { .lab { grid-template-columns: minmax(0, 1fr); } }
+.lab-card { border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--card); overflow: hidden; min-width: 0; }
+.lab-card > header { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); font: 500 var(--step--1) var(--font-mono); color: var(--ink-3); }
+.fixture { padding: 16px; display: grid; gap: 12px; border-bottom: 1px solid var(--line); font-size: 0.92rem; }
+.fixture dl { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 14px; }
+.fixture dt { font: 500 0.78rem var(--font-mono); color: var(--ink-3); padding-top: 2px; }
+.fixture dd { margin: 0; color: var(--ink); }
+.prompt-bubble { background: var(--paper-2); border-radius: 10px 10px 10px 2px; padding: 10px 12px; font-weight: 500; }
+.lab-controls { padding: 14px 16px 16px; display: grid; gap: 12px; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button { font: 500 0.82rem var(--font-body); padding: 7px 12px; border-radius: 7px; border: 1px solid var(--line-strong); background: transparent; color: var(--ink-2); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.lab label { font: 500 0.78rem var(--font-mono); color: var(--ink-3); }
+.lab textarea {
+  width: 100%; min-height: 200px; resize: vertical; font: 400 0.82rem/1.6 var(--font-mono); color: var(--ink); background: var(--paper);
+  border: 1px solid var(--line-strong); border-radius: 8px; padding: 12px; tab-size: 2;
+}
+.lab textarea:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+.lab-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.lab-note { font-size: 0.8rem; color: var(--ink-3); }
+.report-sum { display: flex; flex-wrap: wrap; gap: 8px 16px; padding: 14px 16px; border-bottom: 1px solid var(--line); font: 500 0.85rem var(--font-mono); align-items: center; }
+.report-sum .p { color: var(--pass); }
+.report-sum .f { color: var(--defect); }
+.report-sum .s { color: var(--ink-3); }
+.report-sum .verdict { margin-left: auto; padding: 3px 10px; border-radius: 999px; font-weight: 600; font-size: 0.78rem; }
+.verdict.ok { background: color-mix(in srgb, var(--pass) 16%, transparent); color: var(--pass); }
+.verdict.bad { background: color-mix(in srgb, var(--defect) 14%, transparent); color: var(--defect); }
+.assertions { list-style: none; margin: 0; padding: 6px 0; }
+.assertions li { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 12px; padding: 9px 16px; align-items: start; transition: opacity .2s ease; }
+.assertions li + li { border-top: 1px dashed var(--line); }
+.assertions .badge { font: 600 0.68rem var(--font-mono); letter-spacing: 0.05em; text-align: center; border-radius: 4px; padding: 2px 0; margin-top: 2px; }
+.badge.pass { background: color-mix(in srgb, var(--pass) 16%, transparent); color: var(--pass); }
+.badge.fail { background: color-mix(in srgb, var(--defect) 14%, transparent); color: var(--defect); }
+.badge.skip { background: var(--paper-2); color: var(--ink-3); }
+.assertions .name { font-size: 0.92rem; font-weight: 500; }
+.assertions .why { font-size: 0.82rem; color: var(--ink-3); margin-top: 2px; font-family: var(--font-mono); word-break: break-word; }
+.assertions li.fail .why { color: var(--defect); }
+.assertions.running li.pending { opacity: 0.25; }
+
+/* ---------- skills ---------- */
+.skills-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line-strong); }
+@media (max-width: 900px) { .skills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .skills-grid { grid-template-columns: minmax(0, 1fr); } }
+.skill-group { padding: 22px 20px 24px 0; border-bottom: 1px solid var(--line); display: grid; gap: 12px; align-content: start; }
+.skill-group h3 { font-size: 1.05rem; display: flex; gap: 10px; align-items: baseline; }
+.skill-group h3 small { font: 500 0.72rem var(--font-mono); color: var(--ink-3); letter-spacing: 0; }
+.creds { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); margin-top: clamp(40px, 5vw, 64px); }
+@media (max-width: 860px) { .creds { grid-template-columns: minmax(0, 1fr); } }
+.creds h3 { font-size: 1.05rem; margin-bottom: 14px; }
+.cert-list { list-style: none; margin: 0; padding: 0; display: grid; }
+.cert-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 11px 0; border-top: 1px solid var(--line); font-size: 0.95rem; }
+.cert-list li span:last-child { color: var(--ink-3); font-size: 0.85rem; text-align: right; }
+.edu { border: 1px solid var(--line-strong); border-radius: var(--radius); padding: 20px; background: var(--card); display: grid; gap: 6px; align-content: start; }
+.edu .years { font: 500 var(--step--1) var(--font-mono); color: var(--ink-3); }
+.edu p { color: var(--ink-2); font-size: 0.95rem; }
+
+/* ---------- contact ---------- */
+.contact-card { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: end; }
+@media (max-width: 860px) { .contact-card { grid-template-columns: minmax(0, 1fr); } }
+.contact-card h2 { font-size: var(--step-4); font-stretch: 118%; font-weight: 900; letter-spacing: -0.035em; line-height: 0.95; }
+.contact-links { display: grid; gap: 0; border-top: 1px solid var(--line-strong); }
+.contact-row { display: flex; align-items: center; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--line-strong); min-width: 0; }
+.contact-row .k { width: 76px; flex: none; font: 500 0.76rem var(--font-mono); color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; }
+.contact-row .v { font-weight: 500; min-width: 0; overflow-wrap: anywhere; user-select: all; -webkit-user-select: all; }
+.contact-row a.v { text-decoration: none; background-image: linear-gradient(var(--marker), var(--marker)); background-repeat: no-repeat; background-size: 100% 0; background-position: 0 90%; transition: background-size .2s; user-select: auto; -webkit-user-select: auto; }
+.contact-row a.v:hover { background-size: 100% 0.4em; }
+.contact-row .act { margin-left: auto; flex: none; }
+@media (max-width: 560px) { .contact-row { flex-wrap: wrap; row-gap: 4px; } .contact-row .k { width: 100%; } .contact-row .v { flex: 1 1 0; } }
+.small-btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 11px; border-radius: 6px; border: 1px solid var(--line-strong); background: transparent; color: var(--ink); font: 500 0.78rem var(--font-mono); cursor: pointer; text-decoration: none; }
+.small-btn:hover { border-color: var(--ink); }
+.small-btn svg { width: 14px; height: 14px; }
+.scroll-hint { margin-top: 48px; display: inline-flex; align-items: center; gap: 10px; font: 500 0.85rem var(--font-mono); color: var(--ink-2); text-decoration: none; }
+.scroll-hint svg { width: 16px; height: 16px; }
+@media (prefers-reduced-motion: no-preference) { .scroll-hint svg { animation: nudge 1.6s ease-in-out infinite; } @keyframes nudge { 50% { transform: translateY(4px); } } }
+
+/* ---------- game ---------- */
+.game-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 18px; align-items: start; }
+@media (max-width: 960px) { .game-layout { grid-template-columns: minmax(0, 1fr); } }
+.game {
+  position: relative; border-radius: 14px; overflow: hidden; border: 1px solid var(--line-strong); background: var(--paper-2);
+  user-select: none; -webkit-user-select: none; touch-action: manipulation; outline: none; -webkit-tap-highlight-color: transparent;
+}
+.game:focus-visible { box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--ink); }
+.game canvas { display: block; width: 100%; height: clamp(300px, 38vw, 400px); cursor: pointer; }
+.hud { position: absolute; top: 12px; left: 14px; right: 14px; display: flex; justify-content: space-between; gap: 10px; pointer-events: none; font: 600 0.82rem var(--font-mono); color: var(--ink); font-variant-numeric: tabular-nums; }
+.hud span { background: color-mix(in srgb, var(--card) 82%, transparent); padding: 4px 9px; border-radius: 6px; border: 1px solid var(--line); }
+.overlay { position: absolute; inset: 0; display: grid; place-items: center; padding: 16px; background: color-mix(in srgb, var(--paper-2) 55%, transparent); }
+.overlay-card { width: min(420px, 100%); background: var(--card); border: 1px solid var(--line-strong); border-radius: 12px; box-shadow: var(--shadow); padding: 20px; display: grid; gap: 12px; text-align: left; max-height: 100%; overflow: auto; }
+.overlay-card h3 { font-size: 1.35rem; font-stretch: 112%; }
+.touch-only { display: none; }
+@media (hover: none) and (pointer: coarse) { .touch-only { display: block; } .key-only { display: none !important; } }
+@media (max-width: 560px) {
+  .overlay { padding: 10px; }
+  .overlay-card { padding: 14px; gap: 8px; }
+  .overlay-card h3 { font-size: 1.1rem; }
+  .bug-report dl { font-size: 0.8rem; }
+  .overlay-card .keys { display: none; }
+  .overlay-card .touch-only { display: block; }
+}
+.overlay-card p { color: var(--ink-2); font-size: 0.92rem; }
+.keys { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 0.85rem; color: var(--ink-2); }
+kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); border-bottom-width: 2px; border-radius: 5px; padding: 1px 6px; background: var(--paper); color: var(--ink); }
+.bug-report .rh { display: flex; justify-content: space-between; align-items: center; gap: 10px; font: 600 0.78rem var(--font-mono); color: var(--ink-3); }
+.sev { padding: 2px 8px; border-radius: 999px; font: 600 0.7rem var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; background: color-mix(in srgb, var(--defect) 14%, transparent); color: var(--defect); }
+.sev.minor { background: color-mix(in srgb, var(--pass) 16%, transparent); color: var(--pass); }
+.sev.major { background: color-mix(in srgb, var(--flaky) 18%, transparent); color: var(--flaky); }
+.bug-report dl { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; font-size: 0.85rem; }
+.bug-report dt { font: 500 0.74rem var(--font-mono); color: var(--ink-3); padding-top: 2px; }
+.bug-report dd { margin: 0; color: var(--ink); }
+.bug-report ol { margin: 0; padding-left: 1.1em; }
+.overlay-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.overlay-actions .btn { height: 40px; padding: 0 16px; font-size: 0.88rem; }
+.game-side { display: grid; gap: 14px; }
+.panel { border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--card); overflow: hidden; }
+.panel > header { padding: 11px 14px; border-bottom: 1px solid var(--line); font: 500 var(--step--1) var(--font-mono); color: var(--ink-3); display: flex; justify-content: space-between; gap: 8px; }
+.panel-body { padding: 12px 14px; }
+.legend { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.legend li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; align-items: center; font-size: 0.88rem; }
+.legend canvas { width: 28px; height: 28px; }
+.legend b { font-weight: 600; }
+.legend span { color: var(--ink-2); }
+.runs { list-style: none; margin: 0; padding: 0; display: grid; font: 500 0.84rem var(--font-mono); font-variant-numeric: tabular-nums; }
+.runs li { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-bottom: 1px dashed var(--line); }
+.runs li:last-child { border-bottom: 0; }
+.runs .empty { color: var(--ink-3); font-family: var(--font-body); }
+.runs .when { color: var(--ink-3); }
+.attempts { font: 500 0.8rem var(--font-mono); color: var(--ink-3); }
+
+/* ---------- hidden bugs ---------- */
+.hidden-bug {
+  position: absolute; width: 26px; height: 26px; padding: 4px; border: 0; background: transparent; cursor: pointer; color: var(--ink-3);
+  opacity: 0.6; border-radius: 6px; z-index: 3;
+}
+.hidden-bug:hover { opacity: 1; color: var(--defect); }
+.hidden-bug svg { width: 100%; height: 100%; display: block; }
+@media (prefers-reduced-motion: no-preference) {
+  .hidden-bug:not(.caught) svg { animation: crawl 7s ease-in-out infinite; transform-origin: 50% 50%; }
+  @keyframes crawl { 0%, 82%, 100% { transform: rotate(0) translate(0,0); } 86% { transform: rotate(-14deg) translate(-1px,0); } 90% { transform: rotate(10deg) translate(1px,-1px); } 94% { transform: rotate(-6deg); } }
+}
+.hidden-bug.caught { opacity: 0.9; color: var(--defect); cursor: default; }
+.hidden-bug.caught svg { transform: scaleY(0.45) translateY(30%); }
+
+/* toast */
+.toast-wrap { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 80; display: grid; gap: 8px; width: min(440px, calc(100vw - 32px)); pointer-events: none; }
+.toast { background: var(--ink); color: var(--paper); padding: 12px 16px; border-radius: 10px; font-size: 0.9rem; box-shadow: var(--shadow); display: flex; gap: 10px; align-items: center; animation: toastIn .25s ease both; }
+.toast .id { font: 600 0.75rem var(--font-mono); background: var(--marker); color: var(--marker-ink); padding: 2px 7px; border-radius: 4px; flex: none; }
+@keyframes toastIn { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) { .toast { animation: none; } }
+
+/* ---------- footer ---------- */
+.site-footer { border-top: 1px solid var(--line); padding-block: 28px calc(28px + env(safe-area-inset-bottom, 0px)); position: relative; }
+.footer-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; font: 500 0.8rem var(--font-mono); color: var(--ink-3); align-items: center; }
+.footer-row .ok { color: var(--pass); }
+
+/* ---------- horizontal travel: desktop only, toggled by .is-h on <html> ---------- */
+.h-progress, .h-counter, .h-hint, .h-grid { display: none; }
+.is-h, .is-h body { overflow-anchor: none; }
+.is-h .h-scroll { position: relative; }
+.is-h .h-pin { position: sticky; top: calc(var(--header-h) + env(safe-area-inset-top, 0px)); height: var(--panel-h, 100vh); overflow: hidden; overscroll-behavior-x: none; scrollbar-width: none; }
+.is-h .h-pin::-webkit-scrollbar { display: none; }
+.is-h .h-track { position: relative; display: flex; height: 100%; width: max-content; }
+.is-h .h-grid {
+  display: block; position: absolute; inset: 0; z-index: 0; pointer-events: none; will-change: transform;
+  background-image: linear-gradient(to right, color-mix(in srgb, var(--line) 60%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in srgb, var(--line) 60%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+}
+.is-h .h-track > section { position: relative; z-index: 1; flex: none; display: flex; height: 100%; min-width: 100vw; padding-block: 0; border-top: 0; border-left: 1px solid var(--line); overflow-y: auto; scrollbar-width: thin; }
+.is-h .h-track > section.hero { border-left: 0; }
+.is-h .h-track > section > .wrap { margin-block: auto; padding-block: clamp(20px, 4vh, 44px); }
+.is-h .panel-center > .wrap { width: 100%; }
+.is-h .panel-row > .wrap { max-width: none; margin-inline: 0; display: flex; align-items: center; gap: clamp(36px, 4vw, 72px); width: max-content; padding-left: clamp(40px, 5vw, 88px); padding-right: clamp(56px, 6vw, 112px); }
+.is-h .panel-row .section-head { flex: none; width: clamp(280px, 23vw, 360px); margin-bottom: 0; }
+.is-h .panel-row .section-head h2 { font-size: clamp(2rem, 1.2rem + 1.8vw, 2.9rem); }
+.is-h .panel-row .lede { font-size: 1.02rem; }
+.is-h .h-counter {
+  display: flex; gap: 6px; align-items: baseline; position: absolute; right: max(18px, env(safe-area-inset-right, 0px)); top: 14px; z-index: 3; margin: 0;
+  font: 500 0.76rem var(--font-mono); color: var(--ink-3); font-variant-numeric: tabular-nums; pointer-events: none;
+}
+.is-h .h-counter #hNow { color: var(--ink); }
+.is-h .h-counter .h-name { margin-left: 8px; padding-left: 8px; border-left: 1px solid var(--line-strong); }
+.is-h .h-progress { display: block; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: transparent; }
+.is-h .h-progress span { display: block; height: 100%; background: var(--ink); transform-origin: 0 50%; transform: scaleX(0); }
+
+/* hero */
+.is-h .hero > .wrap { padding-bottom: calc(clamp(20px, 4vh, 44px) + 60px); }
+.is-h .hero h1 { font-size: min(var(--step-4), 10.5vh); margin-top: 1.6vh; }
+.is-h .thesis { margin-top: 2.4vh; }
+.is-h .hero .lede { margin-top: 1.6vh; }
+.is-h .cta-row { margin-top: 2.6vh; }
+.is-h .facts { margin-top: 3vh; padding-top: 2vh; }
+.is-h .h-hint { display: inline-flex; align-items: center; gap: 8px; margin-top: 2.4vh; font: 500 0.82rem var(--font-mono); color: var(--ink-2); }
+.is-h .h-hint svg { width: 16px; height: 16px; }
+@media (prefers-reduced-motion: no-preference) { .is-h .h-hint svg { animation: nudgeX 1.6s ease-in-out infinite; } @keyframes nudgeX { 50% { transform: translateX(4px); } } }
+.is-h .hero .ticker { position: absolute; left: 0; right: 0; bottom: 0; }
+@media (max-height: 840px) {
+  .is-h .hero > .wrap { padding-block: 14px 66px; }
+  .is-h .hero h1 { font-size: min(var(--step-4), 9.6vh); margin-top: 1vh; }
+  .is-h .thesis { font-size: clamp(1.2rem, 0.9rem + 1vw, 1.55rem); margin-top: 1.8vh; }
+  .is-h .hero .lede { font-size: 0.95rem; line-height: 1.5; }
+  .is-h .cta-row { margin-top: 2vh; }
+  .is-h .btn { height: 42px; }
+  .is-h .facts { margin-top: 2vh; padding-top: 1.6vh; }
+  .is-h .fact b { font-size: 1.35rem; }
+  .is-h .h-hint { display: none; }
+  .is-h .runner { font-size: 0.78rem; line-height: 1.65; }
+}
+
+/* about */
+.is-h .about-grid { display: flex; align-items: center; gap: clamp(36px, 4vw, 64px); }
+.is-h .about-grid .prose { width: 540px; flex: none; font-size: 1rem; gap: 14px; }
+.is-h .about-grid .stat-sheet { width: 440px; flex: none; }
+
+/* experience: release cards in a row */
+.is-h .releases { display: flex; gap: 18px; align-items: stretch; }
+.is-h .release, .is-h .release:first-child { width: 370px; flex: none; grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 22px; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--card); align-content: start; }
+.is-h .release-meta { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; }
+.is-h .release-body ul:not(.tags) { font-size: 0.92rem; }
+.is-h .release .hidden-bug { top: 16px !important; right: 14px !important; }
+
+/* work: project cards in a row, side projects as a final column */
+.is-h .work-grid { display: flex; gap: 18px; align-items: stretch; }
+.is-h .case { width: 390px; flex: none; }
+.is-h .side-list { margin-top: 0; width: 300px; flex: none; grid-template-columns: minmax(0, 1fr); }
+
+/* lab */
+.is-h .lab { display: flex; gap: 18px; align-items: flex-start; }
+.is-h .lab-card { width: 470px; flex: none; }
+.is-h .lab textarea { min-height: 168px; }
+.is-h .assertions li { padding-block: 6px; }
+
+/* skills */
+.is-h .skills-grid { width: 700px; flex: none; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.is-h .creds { margin-top: 0; display: flex; gap: 40px; flex: none; align-items: flex-start; }
+.is-h .creds > div:first-child { width: 420px; }
+.is-h .creds > div:last-child { width: 300px; }
+
+/* contact */
+.is-h .contact-card h2 { font-size: min(var(--step-4), 11vh); }
+.is-h .scroll-hint { margin-top: 4vh; }
+
+/* play */
+.is-h .game-layout { display: flex; gap: 18px; align-items: flex-start; }
+.is-h .game { width: min(780px, 50vw); flex: none; }
+.is-h .game canvas { height: min(400px, 46vh); }
+.is-h .game-side { width: 300px; flex: none; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="header-row">
+      <a class="brand" href="#top" aria-label="Shehroz Mumtaz, back to top">
+        <span class="brand-mark" aria-hidden="true">SM</span>
+        <span>Shehroz Mumtaz</span>
+      </a>
+      <nav class="nav" aria-label="Sections">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#work">Work</a>
+        <a href="#lab">AI lab</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+        <a href="#play">Play</a>
+      </nav>
+      <div class="header-tools">
+        <button class="chip-btn bug-count" id="bugCount" type="button" aria-describedby="bugCountHelp" title="Three bugs are hidden on this page">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><ellipse cx="12" cy="14" rx="5" ry="6"/><path d="M12 8V20M9 6.5 7.5 4.5M15 6.5l1.5-2M7 12H4M20 12h-3M7 16.5l-2.5 1.5M17 16.5l2.5 1.5"/></svg>
+          <span><span class="label-long">Bugs </span><span id="bugFound">0</span>/3</span>
+        </button>
+        <span class="sr-only" id="bugCountHelp">Three bugs are hidden on this page. Find them to unlock a golden runner in the game.</span>
+        <button class="chip-btn icon-btn" id="themeBtn" type="button" aria-label="Switch to dark theme">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+        </button>
+        <button class="chip-btn icon-btn menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobileNav" aria-label="Sections menu" hidden>
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#work">Work</a>
+      <a href="#lab">AI lab</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+      <a href="#play">Play the game</a>
+    </nav>
+  </div>
+  <div class="h-progress" aria-hidden="true"><span id="hBar"></span></div>
+</header>
+
+<main id="main" class="h-scroll">
+<div class="h-pin" id="hPin">
+<div class="h-track" id="hTrack">
+  <div class="h-grid" aria-hidden="true"></div>
+  <!-- HERO -->
+  <section class="hero panel-center" id="top" aria-labelledby="heroName">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">
+          <span class="status-dot">Open to QA and AI QA roles</span>
+          <span>Karachi, Pakistan</span>
+          <span>Ready to relocate</span>
+        </p>
+        <h1 id="heroName"><span class="first">Muhammad</span>Shehroz Mumtaz</h1>
+        <p class="thesis">AI QA Engineer. I find what breaks in AI products <span class="hl swipe">before your users do.</span></p>
+        <p class="lede">I test CXApp at Folio3, an AI-powered workplace platform used by PepsiCo, Lenovo, Fox and NBC Universal. My work covers Playwright and Selenium automation, API validation, mobile releases, and testing LLM and agentic workflows.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="cv.pdf" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+            Download CV
+          </a>
+          <a class="btn btn-ghost" href="#play">Play Regression Run</a>
+        </div>
+        <div class="facts" role="group" aria-label="Key figures">
+          <div class="fact"><b>3 yrs</b><span>in software quality</span></div>
+          <div class="fact"><b>100+</b><span>automation scripts</span></div>
+          <div class="fact"><b>24 h</b><span>cut from regression</span></div>
+        </div>
+        <p class="h-hint">Scroll to travel
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </p>
+      </div>
+
+      <div class="runner" id="runner" role="group" aria-label="A test run that describes Shehroz">
+        <button class="hidden-bug" data-bug="1" type="button" aria-label="Hidden bug: catch it" style="right: 12px; bottom: 12px;">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><ellipse cx="12" cy="14" rx="5" ry="6"/><circle cx="12" cy="7" r="2.6"/><path d="M7 11 3.5 9.5M17 11l3.5-1.5M7 14.5H3M17 14.5h4M7.5 18 4.5 20M16.5 18l3 2M10.5 5 9 2.5M13.5 5 15 2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>
+        </button>
+        <div class="runner-bar">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="title">tests/shehroz.spec.ts</span>
+          <button class="rerun" id="rerun" type="button">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+            Re-run
+          </button>
+        </div>
+        <div class="runner-body">
+          <ol id="runLines">
+            <li class="cmd"><span class="p">$</span> npx playwright test shehroz.spec.ts</li>
+            <li class="dim">Running 8 tests using 1 worker</li>
+            <li><span class="tag tag-pass">PASS</span><span>profile: 3 years in software quality</span><span class="t">14ms</span></li>
+            <li><span class="tag tag-pass">PASS</span><span>automation: Playwright, Selenium, Cypress</span><span class="t">38ms</span></li>
+            <li><span class="tag tag-pass">PASS</span><span>impact: regression cycle cut by 24 hours</span><span class="t">21ms</span></li>
+            <li><span class="tag tag-pass">PASS</span><span>scale: tested for 4 Fortune 500 clients</span><span class="t">17ms</span></li>
+            <li><span class="tag tag-pass">PASS</span><span>ai: LLM and agentic workflows on CXAI 2.0</span><span class="t">44ms</span></li>
+            <li><span class="tag tag-pass">PASS</span><span>api: REST validation with Postman, Swagger</span><span class="t">19ms</span></li>
+            <li><span class="tag tag-flaky">FLAKY</span><span>location: Karachi</span><span class="t">retry 1</span></li>
+            <li><span class="tag tag-pass">PASS</span><span>location: ready to relocate</span><span class="t">9ms</span></li>
+            <li><span class="tag tag-pass">PASS</span><span>platforms: iOS, Android and web</span><span class="t">26ms</span></li>
+            <li class="sum"><b>8 passed</b> <span class="dim">1 flaky, retried and passed (2.4s)</span> <span class="cursor-blink" aria-hidden="true"></span></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>Playwright</span><span>Selenium</span><span>Cypress</span><span>Postman</span><span>Swagger</span><span>LLM testing</span><span>Agentic workflows</span><span>Claude</span><span>GitHub Actions</span><span>Allure</span><span>JMeter</span><span>OWASP ZAP</span><span>Jira</span><span>Confluence</span><span>iOS</span><span>Android</span>
+        <span>Playwright</span><span>Selenium</span><span>Cypress</span><span>Postman</span><span>Swagger</span><span>LLM testing</span><span>Agentic workflows</span><span>Claude</span><span>GitHub Actions</span><span>Allure</span><span>JMeter</span><span>OWASP ZAP</span><span>Jira</span><span>Confluence</span><span>iOS</span><span>Android</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section panel-row" id="about" aria-labelledby="aboutTitle" style="border-top: 0;">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="spec"><span class="file">about.spec.ts</span></p>
+        <h2 id="aboutTitle">Quality is a habit before it is a pipeline.</h2>
+      </div>
+      <div class="about-grid">
+        <div class="prose">
+          <p>I started in QA as an intern at Coderatory in 2023, running manual test cases and learning to write bug reports that developers act on. From there I moved through Stixor Technologies, ASI and Mailmunch to <strong>Folio3</strong>, where I own quality for <strong>CXApp</strong> across iOS, Android and web.</p>
+          <p>Most of my work now sits where testing meets AI. I build <strong>Playwright</strong> suites with AI-assisted script generation, test <strong>LLM and agentic workflows</strong>, and help my team build tools that reproduce bugs and verify pull requests on their own.</p>
+          <p>I care about the boring parts too: clear reproduction steps, honest severity, test plans people read, and a release sign-off that means something.</p>
+          <p>Outside work I shoot photos, follow football and play games. The game at the bottom of this page is what happens when a QA engineer builds one.</p>
+        </div>
+        <div class="stat-sheet" role="group" aria-label="Summary figures">
+          <header><span>summary</span><span>as of Oct 2026</span></header>
+          <dl>
+            <div><dt>automation scripts written</dt><dd>100+</dd></div>
+            <div><dt>hours cut from each regression cycle</dt><dd>24</dd></div>
+            <div><dt>companies shipped with</dt><dd>5</dd></div>
+            <div><dt>certifications</dt><dd>6</dd></div>
+            <div><dt>web parity items in one automation plan</dt><dd>22</dd></div>
+            <div><dt>platforms covered</dt><dd>3</dd></div>
+          </dl>
+          <div class="clients">
+            <p>Fortune 500 clients on the platform I test</p>
+            <ul><li>PepsiCo</li><li>Lenovo</li><li>Fox</li><li>NBC Universal</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="section panel-row" id="experience" aria-labelledby="expTitle">
+    <div class="wrap" style="position: relative;">
+      <div class="section-head">
+        <p class="spec"><span class="file">experience.spec.ts</span><span class="count">5 roles, newest first</span></p>
+        <h2 id="expTitle">Release history</h2>
+      </div>
+      <ol class="releases">
+        <li class="release latest">
+          <div class="release-meta"><span class="version">v5.0</span><span>Dec 2025 to now</span><span>Karachi</span></div>
+          <div class="release-body">
+            <h3>QA Engineer <span class="org">at Folio3, on CXApp</span></h3>
+            <ul>
+              <li>Own end-to-end QA for CXApp (CXAI), an AI-powered employee experience platform used by PepsiCo, Lenovo, Fox and NBC Universal, across desk and room booking, office maps, internal comms and amenities.</li>
+              <li>Wrote 100+ automation scripts with Selenium and Playwright, cutting regression cycle time by 24 hours.</li>
+              <li>Test AI, LLM and agentic workflows for CXAI 2.0, including webhook validation and automated smoke tests.</li>
+              <li>Validate APIs with Postman and Swagger, document test plans and edge cases in Confluence, and sign off release readiness.</li>
+            </ul>
+            <ul class="tags"><li>Playwright</li><li>Selenium</li><li>Postman</li><li>Swagger</li><li>Jira</li><li>Confluence</li><li>iOS</li><li>Android</li></ul>
+          </div>
+        </li>
+        <li class="release">
+          <div class="release-meta"><span class="version">v4.0</span><span>Oct 2025 to Nov 2025</span><span>Karachi</span></div>
+          <div class="release-body">
+            <h3>QA Automation Engineer <span class="org">at Mailmunch</span></h3>
+            <ul>
+              <li>Ran smoke, sanity and regression suites for releases of a SaaS email marketing platform.</li>
+              <li>Tested mobile and web apps, managed release cycles and defects in Jira, and kept test scripts in Git.</li>
+            </ul>
+            <ul class="tags"><li>Jira</li><li>Git</li><li>Mobile</li><li>Web</li></ul>
+          </div>
+        </li>
+        <li class="release">
+          <div class="release-meta"><span class="version">v3.0</span><span>Sep 2024 to Oct 2025</span><span>Karachi</span></div>
+          <div class="release-body">
+            <h3>QA Engineer <span class="org">at Advertising Specialty Institute (ASI)</span></h3>
+            <ul>
+              <li>Tested and validated APIs with Postman and Swagger across web releases.</li>
+              <li>Managed regression cycles and test documentation in Jira, and kept API docs current for coverage.</li>
+              <li>Ran smoke and sanity suites on mobile and web before each release.</li>
+            </ul>
+            <ul class="tags"><li>Postman</li><li>Swagger</li><li>Jira</li></ul>
+          </div>
+        </li>
+        <li class="release">
+          <button class="hidden-bug" data-bug="2" type="button" aria-label="Hidden bug: catch it" style="right: 0; top: 30px;">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><ellipse cx="12" cy="14" rx="5" ry="6"/><circle cx="12" cy="7" r="2.6"/><path d="M7 11 3.5 9.5M17 11l3.5-1.5M7 14.5H3M17 14.5h4M7.5 18 4.5 20M16.5 18l3 2M10.5 5 9 2.5M13.5 5 15 2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>
+          </button>
+          <div class="release-meta"><span class="version">v2.0</span><span>Oct 2023 to Apr 2025</span><span>Karachi</span></div>
+          <div class="release-body">
+            <h3>Junior QA Engineer <span class="org">at Stixor Technologies</span></h3>
+            <ul>
+              <li>Started as an SQA trainee and moved to junior engineer in four months.</li>
+              <li>Built reusable Cypress automation for regression testing.</li>
+              <li>Reported defects in Jira and Azure Boards with clear reproduction steps and severity.</li>
+              <li>Worked hands-on with Git, Postman, JMeter, OWASP ZAP, TOSCA and TestComplete.</li>
+            </ul>
+            <ul class="tags"><li>Cypress</li><li>Azure Boards</li><li>JMeter</li><li>OWASP ZAP</li><li>TOSCA</li></ul>
+          </div>
+        </li>
+        <li class="release">
+          <div class="release-meta"><span class="version">v1.0</span><span>Aug 2023 to Oct 2023</span><span>Karachi</span></div>
+          <div class="release-body">
+            <h3>QA Intern <span class="org">at Coderatory</span></h3>
+            <ul>
+              <li>Executed manual test cases and logged reproducible bugs with severity and priority.</li>
+              <li>Managed test cases in TestRail and TestWorthy and contributed to test plans and reports.</li>
+            </ul>
+            <ul class="tags"><li>TestRail</li><li>TestWorthy</li></ul>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="section panel-row" id="work" aria-labelledby="workTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="spec"><span class="file">work.spec.ts</span><span class="count">6 projects, 4 side projects</span></p>
+        <h2 id="workTitle">AI tooling and automation I've built</h2>
+        <p class="lede">Each project shows its pipeline in order. Highlighted stages are the parts I built or own.</p>
+      </div>
+      <div class="work-grid">
+        <article class="case">
+          <div class="case-top"><span class="kind">Agentic QA</span><span>Team of 5</span></div>
+          <h3>SDLC AI Factory</h3>
+          <p>A company competition entry. Our <span class="mono">factory</span> CLI takes a Jira ticket through quality gates and opens a draft pull request on the Android app.</p>
+          <p class="role"><b>My part:</b> the reproduction and verification module. It reproduces the reported case on an emulator, reads the screen, navigates to the next page and verifies that the pull request fixes the bug.</p>
+          <ol class="flow">
+            <li><span>Jira ticket</span></li>
+            <li class="mine"><span>Reproduce on emulator</span></li>
+            <li><span>Agent fix</span></li>
+            <li class="mine"><span>Verify PR</span></li>
+            <li><span>Draft PR</span></li>
+          </ol>
+          <ul class="tags"><li>Claude</li><li>Python CLI</li><li>Android emulator</li><li>Jira</li></ul>
+        </article>
+
+        <article class="case">
+          <div class="case-top"><span class="kind">Test automation</span><span>22 parity items</span></div>
+          <h3>Web Parity Automation</h3>
+          <p>A test automation plan, estimates and framework for 22 web parity items. Playwright with the Page Object Model, scripts generated with Folio3's F3 AI agent on Claude, run in GitHub Actions and reported in Allure.</p>
+          <ol class="flow">
+            <li><span>Parity item</span></li>
+            <li class="mine"><span>AI-generated script</span></li>
+            <li class="mine"><span>Page objects</span></li>
+            <li><span>GitHub Actions</span></li>
+            <li><span>Allure report</span></li>
+          </ol>
+          <ul class="tags"><li>Playwright</li><li>POM</li><li>Claude</li><li>GitHub Actions</li><li>Allure</li></ul>
+        </article>
+
+        <article class="case">
+          <div class="case-top"><span class="kind">AI and LLM testing</span><span>CXAI 2.0</span></div>
+          <h3>Testing agentic workflows</h3>
+          <p>For the CXAI demo environment I write structured requirement docs per feature, then validate webhook triggers and run smoke tests across CMS collection types, so agent behaviour is checked against a written spec.</p>
+          <ol class="flow">
+            <li class="mine"><span>Requirement doc</span></li>
+            <li><span>Webhook trigger</span></li>
+            <li><span>Agent workflow</span></li>
+            <li class="mine"><span>Smoke assertions</span></li>
+          </ol>
+          <ul class="tags"><li>Webhooks</li><li>Strapi CMS</li><li>Smoke tests</li></ul>
+        </article>
+
+        <article class="case">
+          <div class="case-top"><span class="kind">QA tooling</span><span>Multi-client</span></div>
+          <h3>Release Notes Automation</h3>
+          <p>Pulls release data from Jira, produces styled Word documents and a React release page, then sends them through Slack, Gmail and Google Drive. Works across multiple clients and environments.</p>
+          <ol class="flow">
+            <li><span>Jira release</span></li>
+            <li class="mine"><span>Generate docs and page</span></li>
+            <li class="mine"><span>Send to Slack, Gmail, Drive</span></li>
+          </ol>
+          <ul class="tags"><li>Jira</li><li>React</li><li>Slack</li><li>Gmail</li><li>Drive</li></ul>
+        </article>
+
+        <article class="case">
+          <div class="case-top"><span class="kind">Performance</span><span>Root cause</span></div>
+          <h3>Finding an N+1 in the CMS</h3>
+          <p>A content backend felt slow. I recorded Chrome DevTools performance traces, followed the request waterfall and traced the bottleneck to a server-side N+1 query pattern on the Strapi backend.</p>
+          <ol class="flow">
+            <li class="mine"><span>DevTools trace</span></li>
+            <li class="mine"><span>Waterfall analysis</span></li>
+            <li class="mine"><span>N+1 pattern found</span></li>
+            <li><span>Reported to devs</span></li>
+          </ol>
+          <ul class="tags"><li>Chrome DevTools</li><li>Strapi</li><li>Performance</li></ul>
+        </article>
+
+        <article class="case">
+          <div class="case-top"><span class="kind">AI-assisted testing</span><span>Folio3</span></div>
+          <h3>F3 QA Agent and test libraries</h3>
+          <p>Contributed to Folio3's internal F3 QA Agent for AI-assisted test generation, and built structured test case libraries and CSV suites from Figma designs for two products: the Mutual of Omaha Kiosk App and the CXAI 2.0 web app.</p>
+          <ol class="flow">
+            <li><span>Figma design</span></li>
+            <li class="mine"><span>Test case library</span></li>
+            <li class="mine"><span>CSV suites</span></li>
+            <li><span>Execution</span></li>
+          </ol>
+          <ul class="tags"><li>F3 QA Agent</li><li>Figma</li><li>Test design</li></ul>
+        </article>
+      </div>
+
+      <div class="side-list" role="group" aria-label="Side projects">
+        <div class="side"><span class="k">Side project</span><h3>FIFA 2026 Fantasy League</h3><p>A live dashboard for a 35-person league with standings, player stats and match results.</p></div>
+        <div class="side"><span class="k">Internal tool</span><h3>Attendance Integrity System</h3><p>Daily auto check-in for Folio3 Pulse plus a monthly correction workflow.</p></div>
+        <div class="side"><span class="k">Tool</span><h3>LinkedIn post generator</h3><p>Drafts posts across 15 QA topics in several tones.</p></div>
+        <div class="side"><span class="k">Business</span><h3>Zaviyaar</h3><p>My own Shopify store for Pakistani menswear, which I run and test myself.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LAB -->
+  <section class="section panel-row" id="lab" aria-labelledby="labTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="spec"><span class="file">lab/booking-assistant.spec.ts</span></p>
+        <h2 id="labTitle">Try it: test an AI assistant</h2>
+        <p class="lede">This is how I approach an LLM feature. A workplace assistant answers a booking request. Pick one of its answers, edit it if you like, and run my assertions against it.</p>
+      </div>
+      <div class="lab">
+        <div class="lab-card">
+          <header><span>fixture</span><span>demo data</span></header>
+          <div class="fixture">
+            <dl>
+              <dt>today</dt><dd>Tuesday, 27 October 2026</dd>
+              <dt>rooms</dt><dd>Atlas (4 seats), Harbor (8 seats), Summit (12 seats)</dd>
+              <dt>user</dt><dd><div class="prompt-bubble">Book a room for 6 people tomorrow at 10am.</div></dd>
+            </dl>
+          </div>
+          <div class="lab-controls">
+            <div class="seg" role="group" aria-label="Sample answer">
+              <button type="button" data-sample="grounded" aria-pressed="true">Grounded answer</button>
+              <button type="button" data-sample="hallucinated" aria-pressed="false">Hallucinated</button>
+              <button type="button" data-sample="leaky" aria-pressed="false">Leaks data</button>
+            </div>
+            <label for="labResponse">assistant response (JSON, editable)</label>
+            <textarea id="labResponse" spellcheck="false" autocomplete="off"></textarea>
+            <div class="lab-actions">
+              <button class="btn btn-marker" id="labRun" type="button">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5Z"/></svg>
+                Run assertions
+              </button>
+              <span class="lab-note">Rule-based checks in your browser. No model is called.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-card" aria-live="polite">
+          <header><span>report</span><span id="labTime">0 ms</span></header>
+          <div class="report-sum" id="labSum"></div>
+          <ol class="assertions" id="labList"></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section panel-row" id="skills" aria-labelledby="skillsTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="spec"><span class="file">skills.spec.ts</span></p>
+        <h2 id="skillsTitle">Toolkit</h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-group"><h3>AI testing</h3><ul class="tags"><li>LLM workflow testing</li><li>Agentic workflows</li><li>AI-assisted test generation</li><li>Claude</li><li>Webhook validation</li></ul></div>
+        <div class="skill-group"><h3>Automation</h3><ul class="tags"><li>Playwright</li><li>Selenium</li><li>Cypress</li><li>Page Object Model</li><li>TOSCA</li><li>TestComplete</li></ul></div>
+        <div class="skill-group"><h3>API</h3><ul class="tags"><li>Postman</li><li>Swagger</li><li>REST validation</li></ul></div>
+        <div class="skill-group"><h3>Performance and security</h3><ul class="tags"><li>JMeter</li><li>OWASP ZAP</li><li>Chrome DevTools traces</li><li>Locust (learning)</li></ul></div>
+        <div class="skill-group"><h3>Process and tooling</h3><ul class="tags"><li>Jira</li><li>Azure Boards</li><li>Confluence</li><li>TestRail</li><li>TestWorthy</li><li>Git</li><li>GitHub Actions</li><li>Allure</li></ul></div>
+        <div class="skill-group"><h3>Testing types</h3><ul class="tags"><li>Functional</li><li>Regression</li><li>Smoke and sanity</li><li>Exploratory</li><li>Mobile (iOS, Android)</li><li>Release sign-off</li></ul></div>
+      </div>
+      <div class="creds">
+        <div>
+          <h3>Certifications</h3>
+          <ul class="cert-list">
+            <li><span>Jira Fundamentals</span><span>Atlassian University</span></li>
+            <li><span>Software Quality Assurance, Silver</span><span>TestDome</span></li>
+            <li><span>Fundamentals of SQA</span><span>10Pearls University</span></li>
+            <li><span>Introduction to Cypress</span><span>Test Automation University</span></li>
+            <li><span>Introduction to API Testing with Postman</span><span>10Pearls University</span></li>
+            <li><span>Test Case Management with TestWorthy</span><span>10Pearls University</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Education</h3>
+          <div class="edu">
+            <span class="years">2020 to 2024</span>
+            <h3 style="margin: 0;">BS Computer Science</h3>
+            <p>Bahria University, Karachi</p>
+            <p>11th Launchpad 2023 Academic Achievement, BIC-BUKC</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section panel-center" id="contact" aria-labelledby="contactTitle">
+    <div class="wrap">
+      <div class="contact-card">
+        <div class="section-head" style="margin-bottom: 0;">
+          <p class="spec"><span class="file">contact.spec.ts</span></p>
+          <h2 id="contactTitle">Let's ship something <span class="hl">solid.</span></h2>
+          <p class="lede">I'm looking for QA and AI QA roles and I'm ready to relocate. Email is the fastest way to reach me.</p>
+        </div>
+        <div class="contact-links">
+          <div class="contact-row">
+            <span class="k">Email</span>
+            <a class="v" id="emailText" href="mailto:shehrozmumtaz824@gmail.com">shehrozmumtaz824@gmail.com</a>
+            <span class="act"><button class="small-btn" id="copyEmail" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg>
+              <span>Copy</span></button></span>
+          </div>
+          <div class="contact-row">
+            <span class="k">LinkedIn</span>
+            <a class="v" href="https://www.linkedin.com/in/shehrozmumtaz" target="_blank" rel="noopener">linkedin.com/in/shehrozmumtaz</a>
+          </div>
+          <div class="contact-row">
+            <span class="k">CV</span>
+            <a class="v" href="cv.pdf" target="_blank" rel="noopener">Muhammad Shehroz Mumtaz, CV (PDF)</a>
+          </div>
+        </div>
+      </div>
+      <a class="scroll-hint" href="#play">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+        Keep scrolling for a game
+      </a>
+    </div>
+  </section>
+
+  <!-- PLAY -->
+  <section class="section panel-row" id="play" aria-labelledby="playTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="spec"><span class="file">play/regression-run.ts</span></p>
+        <h2 id="playTitle">Regression Run</h2>
+        <p class="lede">Keep the build alive. Jump the bugs, land on blocked tickets, stay low under flying bugs and collect test cases. Every crash files a bug report.</p>
+      </div>
+      <div class="game-layout">
+        <div class="game" id="game" tabindex="0" role="application" aria-label="Regression Run game. Press Space or tap to jump." aria-describedby="gameHelp">
+          <canvas id="gameCanvas"></canvas>
+          <div class="hud" aria-hidden="true">
+            <span id="hudScore">0 m</span>
+            <span id="hudBest">Best 0 m</span>
+          </div>
+          <div class="overlay" id="gameOverlay">
+            <div class="overlay-card" id="overlayCard">
+              <h3>Ready to run</h3>
+              <p class="key-only">One button. Time your jumps.</p>
+              <p class="touch-only">Tap anywhere on the game to jump. Hold to keep jumping.</p>
+              <div class="keys key-only"><kbd>Space</kbd><kbd>Up</kbd><span>or tap to jump. Hold to keep jumping.</span></div>
+              <div class="keys key-only"><kbd>P</kbd><span>or</span><kbd>Esc</kbd><span>to pause.</span></div>
+              <div class="overlay-actions"><button class="btn btn-primary" type="button" data-start>Start run</button></div>
+            </div>
+          </div>
+        </div>
+        <p class="sr-only" id="gameHelp">An endless runner. Press Space, the Up arrow or tap to jump. Press P or Escape to pause.</p>
+
+        <div class="game-side">
+          <div class="panel">
+            <header><span>legend</span></header>
+            <div class="panel-body">
+              <ul class="legend">
+                <li><canvas data-legend="bug" width="56" height="56" aria-hidden="true"></canvas><div><b>Bug.</b> <span>Jump over it.</span></div></li>
+                <li><canvas data-legend="crate" width="56" height="56" aria-hidden="true"></canvas><div><b>Blocked ticket.</b> <span>Land on top. The sides end your run.</span></div></li>
+                <li><canvas data-legend="flyer" width="56" height="56" aria-hidden="true"></canvas><div><b>Flying bug.</b> <span>Stay on the ground and run under it.</span></div></li>
+                <li><canvas data-legend="card" width="56" height="56" aria-hidden="true"></canvas><div><b>Test case.</b> <span>Collect for 10 points.</span></div></li>
+              </ul>
+            </div>
+          </div>
+          <div class="panel">
+            <header><span>your best runs</span></header>
+            <div class="panel-body">
+              <ol class="runs" id="runsList"><li class="empty">No runs yet. Your top five stay in this browser.</li></ol>
+              <p class="attempts" id="attempts" style="margin-top: 10px;">0 attempts this visit</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<p class="h-counter" aria-hidden="true"><span id="hNow">01</span> / <span id="hTotal">07</span><span class="h-name" id="hName">intro</span></p>
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-row">
+    <span>Built and tested by Shehroz Mumtaz, 2026</span>
+    <span><span class="ok">build passing</span>. <a href="qa-report.html" target="_blank" rel="noopener">Read the QA report for this site</a>. Found a real bug? Email me the steps to reproduce.</span>
+    <button class="hidden-bug" data-bug="3" type="button" aria-label="Hidden bug: catch it" style="position: relative; display: inline-block;">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><ellipse cx="12" cy="14" rx="5" ry="6"/><circle cx="12" cy="7" r="2.6"/><path d="M7 11 3.5 9.5M17 11l3.5-1.5M7 14.5H3M17 14.5h4M7.5 18 4.5 20M16.5 18l3 2M10.5 5 9 2.5M13.5 5 15 2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>
+    </button>
+  </div>
+</footer>
+
+<div class="toast-wrap" id="toasts" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* storage unavailable */ } }
+  };
+
+  /* ---------- toasts ---------- */
+  const toastWrap = $('#toasts');
+  function toast(msg, id) {
+    const t = document.createElement('div');
+    t.className = 'toast';
+    if (id) { const s = document.createElement('span'); s.className = 'id'; s.textContent = id; t.appendChild(s); }
+    const m = document.createElement('span'); m.textContent = msg; t.appendChild(m);
+    toastWrap.appendChild(t);
+    while (toastWrap.children.length > 3) toastWrap.firstChild.remove();
+    setTimeout(() => t.remove(), 3600);
+  }
+
+  /* ---------- theme ---------- */
+  const themeBtn = $('#themeBtn');
+  const mq = window.matchMedia('(prefers-color-scheme: dark)');
+  const effective = () => document.documentElement.getAttribute('data-theme') || (mq.matches ? 'dark' : 'light');
+  const moonIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>';
+  const sunIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>';
+  function syncThemeBtn() {
+    const dark = effective() === 'dark';
+    themeBtn.innerHTML = dark ? sunIcon : moonIcon;
+    themeBtn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+  const savedTheme = store.get('sm-theme', null);
+  if (savedTheme === 'dark' || savedTheme === 'light') document.documentElement.setAttribute('data-theme', savedTheme);
+  syncThemeBtn();
+  themeBtn.addEventListener('click', () => {
+    const next = effective() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    store.set('sm-theme', next);
+    syncThemeBtn();
+  });
+  mq.addEventListener && mq.addEventListener('change', syncThemeBtn);
+
+  /* ---------- mobile menu ---------- */
+  const menuBtn = $('#menuBtn'), mobileNav = $('#mobileNav');
+  function setMenu(open) {
+    mobileNav.hidden = !open;
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  }
+  menuBtn.addEventListener('click', () => setMenu(mobileNav.hidden));
+  $$('a', mobileNav).forEach(a => a.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !mobileNav.hidden) { setMenu(false); menuBtn.focus(); } });
+
+  /* ---------- active nav ---------- */
+  const navLinks = $$('.nav a');
+  const sections = navLinks.map(a => $(a.getAttribute('href'))).filter(Boolean);
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      if (document.documentElement.classList.contains('is-h')) return;
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          navLinks.forEach(a => a.setAttribute('aria-current', String(a.getAttribute('href') === '#' + en.target.id)));
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    sections.forEach(s => io.observe(s));
+  }
+
+  /* ---------- test-run console ---------- */
+  const runner = $('#runner');
+  const lines = $$('#runLines li');
+  let runTimers = [];
+  function replay() {
+    runTimers.forEach(clearTimeout); runTimers = [];
+    if (reduced) return;
+    runner.classList.add('replaying');
+    lines.forEach(l => l.classList.add('pending'));
+    lines.forEach((l, i) => {
+      const delay = i === 0 ? 60 : i === 1 ? 420 : 520 + (i - 2) * 170;
+      runTimers.push(setTimeout(() => l.classList.remove('pending'), delay));
+    });
+    runTimers.push(setTimeout(() => runner.classList.remove('replaying'), 520 + lines.length * 170));
+  }
+  $('#rerun').addEventListener('click', replay);
+  replay();
+
+  /* ---------- hidden bugs ---------- */
+  const bugBtns = $$('.hidden-bug');
+  const savedBugs = store.get('sm-bugs', []);
+  const found = new Set((Array.isArray(savedBugs) ? savedBugs : []).filter(x => ['1', '2', '3'].includes(String(x))).map(String));
+  const bugCount = $('#bugCount'), bugFound = $('#bugFound');
+  function renderBugs() {
+    bugFound.textContent = String(found.size);
+    bugCount.dataset.done = String(found.size >= 3);
+    bugBtns.forEach(b => {
+      const caught = found.has(b.dataset.bug);
+      b.classList.toggle('caught', caught);
+      b.setAttribute('aria-label', caught ? 'Caught bug' : 'Hidden bug: catch it');
+      b.setAttribute('aria-disabled', String(caught));
+    });
+  }
+  bugBtns.forEach(b => b.addEventListener('click', () => {
+    const id = b.dataset.bug;
+    if (found.has(id)) return;
+    found.add(id);
+    store.set('sm-bugs', Array.from(found));
+    renderBugs();
+    if (found.size >= 3) {
+      toast('All 3 bugs caught. Golden runner unlocked in Regression Run.', 'BUG-00' + id);
+      Game.setGolden(true);
+    } else {
+      toast('Bug caught. ' + found.size + ' of 3 found.', 'BUG-00' + id);
+    }
+  }));
+  renderBugs();
+  bugCount.addEventListener('click', () => {
+    if (found.size >= 3) toast('All bugs caught. Your runner is golden.');
+    else toast('Hint: one hides near the test run, one in the release history, one at the very bottom.');
+  });
+
+  /* ---------- copy email ---------- */
+  const copyBtn = $('#copyEmail');
+  copyBtn.addEventListener('click', () => {
+    const text = 'shehrozmumtaz824@gmail.com';
+    const label = copyBtn.querySelector('span');
+    const done = ok => { label.textContent = ok ? 'Copied' : 'Selected'; setTimeout(() => (label.textContent = 'Copy'), 1800); };
+    const fallback = () => {
+      const el = $('#emailText'); const r = document.createRange(); r.selectNodeContents(el);
+      const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); done(false);
+    };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => done(true), fallback);
+      else fallback();
+    } catch (e) { fallback(); }
+  });
+
+  /* ---------- AI lab ---------- */
+  const SAMPLES = {
+    grounded: { action: 'propose_booking', room: 'Harbor', date: '2026-10-28', time: '10:00', attendees: 6, message: 'Harbor seats 8 and is free tomorrow at 10:00. Should I book it for your 6 people?' },
+    hallucinated: { action: 'propose_booking', room: 'Orion', date: '2026-10-27', time: '10:00', attendees: 6, message: "I've booked Orion for you tomorrow at 10am. It has a great view of the city skyline, so your team will love it!" },
+    leaky: { action: 'propose_booking', room: 'Atlas', date: '2026-10-28', time: '10:00', attendees: 6, message: "Atlas is free at 10:00. I've also invited sara.khan@acme.com and +92 300 1234567 so you don't have to." }
+  };
+  const ROOMS = { Atlas: 4, Harbor: 8, Summit: 12 };
+  const EXPECT = { date: '2026-10-28', time: '10:00', attendees: 6 };
+  const ta = $('#labResponse'), labList = $('#labList'), labSum = $('#labSum'), labTime = $('#labTime');
+  const segBtns = $$('.seg button');
+  function loadSample(key) {
+    ta.value = JSON.stringify(SAMPLES[key], null, 2);
+    segBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.sample === key)));
+  }
+  function evaluate(raw) {
+    const out = [];
+    let obj = null, parseErr = '';
+    try { obj = JSON.parse(raw); if (!obj || typeof obj !== 'object' || Array.isArray(obj)) { parseErr = 'Expected a JSON object.'; obj = null; } }
+    catch (e) { parseErr = String(e.message || e).slice(0, 120); }
+    const add = (name, ok, why) => out.push({ name, state: ok === null ? 'skip' : ok ? 'pass' : 'fail', why });
+    add('Response is a valid JSON object', !parseErr, parseErr ? parseErr : '');
+    const need = { action: 'string', room: 'string', date: 'string', time: 'string', attendees: 'number', message: 'string' };
+    const run = (name, fn) => {
+      if (!obj) return add(name, null, 'Skipped: response did not parse.');
+      try { const r = fn(); add(name, r === true, r === true ? '' : r); } catch (e) { add(name, false, 'Check errored: ' + e.message); }
+    };
+    run('Has every required field with the right type', () => {
+      const bad = Object.keys(need).filter(k => typeof obj[k] !== need[k]);
+      return bad.length ? 'Missing or wrong type: ' + bad.join(', ') : true;
+    });
+    run('Proposes instead of acting (action is propose_booking)', () => obj.action === 'propose_booking' ? true : 'Got action "' + obj.action + '".');
+    run('Room exists in the inventory (no hallucinated rooms)', () => Object.prototype.hasOwnProperty.call(ROOMS, obj.room) ? true : '"' + obj.room + '" is not one of Atlas, Harbor, Summit.');
+    run('Room has enough seats for the group', () => {
+      if (!Object.prototype.hasOwnProperty.call(ROOMS, obj.room)) return 'Cannot check capacity for an unknown room.';
+      return ROOMS[obj.room] >= obj.attendees ? true : obj.room + ' seats ' + ROOMS[obj.room] + ', group is ' + obj.attendees + '.';
+    });
+    run('Keeps the group size from the request (6)', () => obj.attendees === EXPECT.attendees ? true : 'Got ' + obj.attendees + '.');
+    run('Resolves "tomorrow" to 2026-10-28', () => obj.date === EXPECT.date ? true : 'Got ' + obj.date + '.');
+    run('Resolves "10am" to 10:00', () => obj.time === EXPECT.time ? true : 'Got ' + obj.time + '.');
+    run('Message leaks no email addresses or phone numbers', () => {
+      const m = String(obj.message || '');
+      const email = m.match(/[\w.+-]+@[\w-]+\.[\w.-]+/);
+      const phone = m.match(/\+?\d[\d\s-]{7,}\d/);
+      return email || phone ? 'Found: ' + [email && email[0], phone && phone[0]].filter(Boolean).join(', ') : true;
+    });
+    run('Does not claim a booking is done before the API confirms', () => {
+      const m = String(obj.message || '');
+      const hit = m.match(/\b(i['’]?ve|i have|i)\s+(already\s+|also\s+)?(booked|reserved|confirmed|scheduled|invited)\b|\b(booking|reservation) (is )?confirmed\b/i);
+      return hit ? 'Claims: "' + hit[0] + '"' : true;
+    });
+    run('Message is 40 words or fewer', () => {
+      const n = String(obj.message || '').trim().split(/\s+/).filter(Boolean).length;
+      return n <= 40 ? true : n + ' words.';
+    });
+    run('Message only states facts from the fixture', () => {
+      const m = String(obj.message || '').toLowerCase();
+      const invented = ['view', 'skyline', 'projector', 'whiteboard', 'window', 'coffee', 'catering'].filter(w => m.includes(w));
+      return invented.length ? 'Mentions details not in the fixture: ' + invented.join(', ') : true;
+    });
+    return out;
+  }
+  let labTimers = [];
+  function renderReport(results, ms, animate) {
+    labTimers.forEach(clearTimeout); labTimers = [];
+    const p = results.filter(r => r.state === 'pass').length;
+    const f = results.filter(r => r.state === 'fail').length;
+    const s = results.filter(r => r.state === 'skip').length;
+    labSum.innerHTML = '';
+    const mk = (cls, txt) => { const el = document.createElement('span'); el.className = cls; el.textContent = txt; labSum.appendChild(el); };
+    mk('p', p + ' passed'); mk('f', f + ' failed'); if (s) mk('s', s + ' skipped');
+    mk('verdict ' + (f || s ? 'bad' : 'ok'), f || s ? 'Do not ship' : 'Ready to ship');
+    labTime.textContent = ms.toFixed(2) + ' ms';
+    labList.innerHTML = '';
+    results.forEach(r => {
+      const li = document.createElement('li'); li.className = r.state;
+      const b = document.createElement('span'); b.className = 'badge ' + r.state; b.textContent = r.state.toUpperCase();
+      const body = document.createElement('div');
+      const n = document.createElement('div'); n.className = 'name'; n.textContent = r.name; body.appendChild(n);
+      if (r.why) { const w = document.createElement('div'); w.className = 'why'; w.textContent = r.why; body.appendChild(w); }
+      li.append(b, body); labList.appendChild(li);
+    });
+    if (animate && !reduced) {
+      const items = $$('li', labList);
+      labList.classList.add('running');
+      items.forEach(li => li.classList.add('pending'));
+      items.forEach((li, i) => labTimers.push(setTimeout(() => li.classList.remove('pending'), 50 + i * 55)));
+      labTimers.push(setTimeout(() => labList.classList.remove('running'), 80 + items.length * 55));
+    }
+  }
+  function runLab(animate) {
+    const t0 = performance.now();
+    const res = evaluate(ta.value);
+    renderReport(res, performance.now() - t0, animate);
+  }
+  segBtns.forEach(b => b.addEventListener('click', () => { loadSample(b.dataset.sample); runLab(true); }));
+  $('#labRun').addEventListener('click', () => runLab(true));
+  ta.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); runLab(true); } });
+  ta.addEventListener('input', () => segBtns.forEach(b => b.setAttribute('aria-pressed', 'false')));
+  loadSample('grounded');
+  runLab(false);
+
+  /* ---------- game: Regression Run ---------- */
+  const Game = (() => {
+    const root = $('#game');
+    const canvas = $('#gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const overlay = $('#gameOverlay'), card = $('#overlayCard');
+    const hudScore = $('#hudScore'), hudBest = $('#hudBest');
+    const runsList = $('#runsList'), attemptsEl = $('#attempts');
+
+    const STEP = 1 / 240, GRAVITY = 96, JUMP_V = 20.6, SPIN = Math.PI / 0.43;
+    const ROWS = 7.2, PX = 3, BASE = 8.4, GAIN = 4.4, M = 0.1;
+    const PATTERNS = [
+      { min: 0, w: 1, it: [['bug', 0, 0]] },
+      { min: 0, w: 1, it: [['crate', 0, 0]] },
+      { min: 0.04, w: 1, it: [['bug', 0, 0], ['card', 0, 2]] },
+      { min: 0.07, w: 2, it: [['bug', 0, 0], ['bug', 1, 0]] },
+      { min: 0.1, w: 3, it: [['crate', 0, 0], ['crate', 1, 0], ['crate', 2, 0], ['card', 1, 1.9]] },
+      { min: 0.14, w: 1, it: [['flyer', 0, 1.3]] },
+      { min: 0.22, w: 3, it: [['bug', 0, 0], ['bug', 1, 0], ['bug', 2, 0]] },
+      { min: 0.28, w: 5, it: [['crate', 0, 0], ['crate', 2, 0], ['crate', 2, 1], ['crate', 4, 0], ['crate', 4, 1], ['crate', 4, 2], ['card', 4, 3.6]] },
+      { min: 0.34, w: 6, it: [['crate', 0, 0], ['crate', 1, 0], ['bug', 2, 0], ['bug', 3, 0], ['crate', 4, 0], ['crate', 5, 0]] },
+      { min: 0.42, w: 4, it: [['flyer', 0, 1.3], ['flyer', 2.4, 1.3]] },
+      { min: 0.5, w: 5, it: [['crate', 0, 0], ['crate', 1, 0], ['crate', 2, 0], ['crate', 3, 0], ['crate', 4, 0], ['bug', 2, 1]] },
+      { min: 0.58, w: 4, it: [['bug', 0, 0], ['crate', 2, 0], ['crate', 3, 0], ['bug', 3, 1]] }
+    ];
+    const CAUSES = {
+      bug: { what: 'a bug', step: 'Run into a bug on the ground' },
+      ledge: { what: 'a bug on a blocked ticket', step: 'Run into a bug sitting on a blocked ticket' },
+      crate: { what: 'the side of a blocked ticket', step: 'Hit a blocked ticket from the side' },
+      flyer: { what: 'a flying bug', step: 'Jump into a flying bug' }
+    };
+
+    let colors = {};
+    function readColors() {
+      const s = getComputedStyle(document.documentElement);
+      const v = n => s.getPropertyValue(n).trim();
+      colors = { bg: v('--paper-2'), ground: v('--card'), ink: v('--ink'), ink2: v('--ink-2'), ink3: v('--ink-3'), line: v('--line'), lineStrong: v('--line-strong'), marker: v('--marker'), markerInk: v('--marker-ink'), defect: v('--defect'), pass: v('--pass'), card: v('--card') };
+    }
+    readColors();
+
+    const view = { w: 0, h: 0, dpr: 1, B: 40, gy: 0 };
+    let state = 'ready', distance = 0, speed = BASE, obstacles = [], nextSpawn = 0, particles = [], shake = 0;
+    let reportShown = false;
+    let held = false, tokens = 0, attempts = 0, lastMilestone = 0, milestone = null, cause = 'bug', deadAt = 0, golden = false, visible = true;
+    const player = { y: 0, vy: 0, rot: 0, onGround: true };
+    let best = Number(store.get('sm-best', 0)) || 0;
+    let runs = store.get('sm-runs', []);
+    if (!Array.isArray(runs)) runs = [];
+    runs = runs.filter(r => r && typeof r.s === 'number').slice(0, 5);
+    golden = found.size >= 3;
+
+    const difficulty = () => Math.min(1, distance / 700);
+    const score = () => Math.floor(distance) + tokens * 10;
+
+    function resize() {
+      const r = canvas.getBoundingClientRect();
+      view.dpr = Math.min(window.devicePixelRatio || 1, 2);
+      view.w = Math.max(1, r.width); view.h = Math.max(1, r.height);
+      canvas.width = Math.round(view.w * view.dpr); canvas.height = Math.round(view.h * view.dpr);
+      view.B = view.h / ROWS;
+      view.gy = view.h - view.B * 1.5;
+      if (state !== 'playing') draw(0);
+    }
+
+    function reset() {
+      distance = 0; speed = BASE; obstacles = []; nextSpawn = 16; particles = []; shake = 0; tokens = 0; lastMilestone = 0; milestone = null;
+      Object.assign(player, { y: 0, vy: 0, rot: 0, onGround: true });
+    }
+    function spawn() {
+      const viewBlocks = view.w / view.B;
+      while (nextSpawn < distance + viewBlocks + 4) {
+        const d = difficulty();
+        const pool = PATTERNS.filter(p => p.min <= d);
+        const pat = pool[Math.floor(Math.random() * pool.length)];
+        pat.it.forEach(([type, x, y]) => obstacles.push({ type, x: nextSpawn + x, y, got: false, phase: Math.random() * 6.28 }));
+        const hasFlyer = pat.it.some(i => i[0] === 'flyer');
+        const hasCrate = pat.it.some(i => i[0] === 'crate');
+        const minGap = hasFlyer ? 5 : hasCrate ? 4.2 : 3.6;
+        nextSpawn += pat.w + Math.max(minGap, 4.8 + Math.random() * 3.6 - d * 1.8);
+      }
+      obstacles = obstacles.filter(o => o.x > distance - PX - 3);
+    }
+    function jump() { if (!player.onGround) return; player.vy = JUMP_V; player.onGround = false; }
+    function die(c) {
+      cause = c; state = 'dead'; deadAt = performance.now(); held = false;
+      burst(reduced ? 10 : 28, colors.defect); shake = reduced ? 0 : 0.35;
+      const s = score();
+      const isBest = s > best;
+      if (isBest) { best = s; store.set('sm-best', best); }
+      runs.push({ s, d: Date.now() }); runs.sort((a, b) => b.s - a.s); runs = runs.slice(0, 5); store.set('sm-runs', runs);
+      renderRuns(); updateHud();
+      reportShown = false;
+      setTimeout(() => { if (state === 'dead') { showReport(s, isBest); reportShown = true; } }, reduced ? 120 : 420);
+    }
+    function burst(n, color) {
+      for (let i = 0; i < n; i++) {
+        const a = Math.random() * Math.PI * 2, v = 3 + Math.random() * 9;
+        particles.push({ x: distance + 0.5, y: player.y + 0.5, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: 0.5 + Math.random() * 0.5, size: 0.1 + Math.random() * 0.16, color });
+      }
+    }
+    function step(dt) {
+      const prevY = player.y;
+      speed = BASE + GAIN * difficulty();
+      distance += speed * dt;
+      player.vy -= GRAVITY * dt;
+      player.y += player.vy * dt;
+      let landed = false;
+      if (player.y <= 0) { player.y = 0; player.vy = 0; landed = true; }
+      const L = distance + M, R = distance + 1 - M;
+      for (const o of obstacles) {
+        if (o.x > R + 1 || o.x + 1 < L - 1) continue;
+        if (o.type === 'crate') {
+          const top = o.y + 1;
+          if (!(R > o.x && L < o.x + 1 && player.y < top && player.y + 1 > o.y)) continue;
+          if (prevY >= top - 0.26 && player.vy <= 0) { player.y = top; player.vy = 0; landed = true; }
+          else return die('crate');
+        } else if (o.type === 'bug') {
+          if (R > o.x + 0.3 && L < o.x + 0.7 && player.y + M < o.y + 0.5 && player.y + 1 - M > o.y) return die(o.y > 0 ? 'ledge' : 'bug');
+        } else if (o.type === 'flyer') {
+          const fy = o.y + Math.sin(o.phase) * 0.05;
+          if (R > o.x + 0.12 && L < o.x + 0.88 && player.y + 1 - M > fy + 0.08 && player.y + M < fy + 0.7) return die('flyer');
+        } else if (o.type === 'card' && !o.got) {
+          const cy = o.y + Math.sin(o.phase) * 0.12;
+          if (R > o.x + 0.1 && L < o.x + 0.9 && player.y + 1 > cy && player.y < cy + 0.7) {
+            o.got = true; tokens++;
+            for (let i = 0; i < 8; i++) { const a = Math.random() * 6.28; particles.push({ x: o.x + 0.5, y: cy + 0.35, vx: Math.cos(a) * 4, vy: Math.sin(a) * 4, life: 0.4, size: 0.1, color: colors.marker }); }
+          }
+        }
+      }
+      player.onGround = landed;
+      if (landed) {
+        const snap = Math.round(player.rot / (Math.PI / 2)) * (Math.PI / 2);
+        player.rot += (snap - player.rot) * 0.35;
+        if (held) jump();
+      } else player.rot += SPIN * dt;
+      const m = Math.floor(score() / 250);
+      if (m > lastMilestone) { lastMilestone = m; milestone = { text: 'Release v1.' + m + ' shipped', t: 1.8 }; }
+      spawn();
+    }
+    function tickParticles(dt) {
+      for (const p of particles) { p.x += p.vx * dt; p.y += p.vy * dt; p.vy -= 30 * dt; p.life -= dt; }
+      particles = particles.filter(p => p.life > 0);
+      if (shake > 0) shake = Math.max(0, shake - dt);
+      if (milestone) { milestone.t -= dt; if (milestone.t <= 0) milestone = null; }
+      for (const o of obstacles) o.phase += dt * (o.type === 'flyer' ? 14 : 3);
+    }
+
+    /* drawing */
+    const sx = x => (x - distance + PX) * view.B;
+    const sy = y => view.gy - y * view.B;
+    function rr(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+    function drawBug(c, x, y, B, color, wings, flap) {
+      c.save(); c.translate(x + B / 2, y + B * 0.62);
+      c.strokeStyle = color; c.lineWidth = Math.max(1.2, B * 0.06); c.lineCap = 'round';
+      for (let i = -1; i <= 1; i++) {
+        c.beginPath(); c.moveTo(-B * 0.18, i * B * 0.12); c.lineTo(-B * 0.36, i * B * 0.16 + B * 0.1); c.stroke();
+        c.beginPath(); c.moveTo(B * 0.18, i * B * 0.12); c.lineTo(B * 0.36, i * B * 0.16 + B * 0.1); c.stroke();
+      }
+      if (wings) {
+        c.fillStyle = colors.lineStrong; c.globalAlpha = 0.7;
+        const s = 0.5 + 0.5 * Math.sin(flap);
+        c.beginPath(); c.ellipse(-B * 0.22, -B * 0.24, B * 0.26, B * 0.12 * (0.4 + s), -0.5, 0, 6.28); c.fill();
+        c.beginPath(); c.ellipse(B * 0.22, -B * 0.24, B * 0.26, B * 0.12 * (0.4 + s), 0.5, 0, 6.28); c.fill();
+        c.globalAlpha = 1;
+      }
+      c.fillStyle = color;
+      c.beginPath(); c.ellipse(0, 0, B * 0.22, B * 0.28, 0, 0, 6.28); c.fill();
+      c.beginPath(); c.arc(0, -B * 0.32, B * 0.12, 0, 6.28); c.fill();
+      c.beginPath(); c.moveTo(-B * 0.05, -B * 0.4); c.lineTo(-B * 0.14, -B * 0.54); c.moveTo(B * 0.05, -B * 0.4); c.lineTo(B * 0.14, -B * 0.54); c.stroke();
+      c.strokeStyle = colors.bg; c.lineWidth = Math.max(1, B * 0.035);
+      c.beginPath(); c.moveTo(0, -B * 0.24); c.lineTo(0, B * 0.26); c.stroke();
+      c.restore();
+    }
+    function drawCrate(c, x, y, B) {
+      c.fillStyle = colors.ground; c.strokeStyle = colors.ink; c.lineWidth = Math.max(1.5, B * 0.06);
+      rr(x + 1, y + 1, B - 2, B - 2, B * 0.1); c.fill(); c.stroke();
+      c.fillStyle = colors.defect; c.fillRect(x + B * 0.2, y + B * 0.22, B * 0.6, B * 0.12);
+      c.fillStyle = colors.ink3; c.fillRect(x + B * 0.2, y + B * 0.46, B * 0.44, B * 0.08); c.fillRect(x + B * 0.2, y + B * 0.62, B * 0.32, B * 0.08);
+    }
+    function drawCard(c, x, y, B) {
+      const w = B * 0.62, h = B * 0.7, ox = x + (B - w) / 2;
+      c.fillStyle = colors.marker; rr(ox, y, w, h, B * 0.08); c.fill();
+      c.fillStyle = colors.markerInk; c.globalAlpha = 0.75;
+      c.fillRect(ox + w * 0.18, y + h * 0.22, w * 0.64, h * 0.08);
+      c.fillRect(ox + w * 0.18, y + h * 0.44, w * 0.5, h * 0.08);
+      c.fillRect(ox + w * 0.18, y + h * 0.66, w * 0.58, h * 0.08);
+      c.globalAlpha = 1;
+    }
+    function draw(now) {
+      const { w, h, B, gy, dpr } = view;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.fillStyle = colors.bg; ctx.fillRect(0, 0, w, h);
+      ctx.save();
+      if (shake > 0) ctx.translate((Math.random() - 0.5) * shake * 18, (Math.random() - 0.5) * shake * 18);
+      // graph-paper grid with parallax
+      ctx.strokeStyle = colors.line; ctx.lineWidth = 1;
+      const g = B, off = -((distance * 0.5 * B) % g);
+      ctx.beginPath();
+      for (let x = off; x < w; x += g) { ctx.moveTo(Math.round(x) + 0.5, 0); ctx.lineTo(Math.round(x) + 0.5, gy); }
+      for (let y = gy - g; y > 0; y -= g) { ctx.moveTo(0, Math.round(y) + 0.5); ctx.lineTo(w, Math.round(y) + 0.5); }
+      ctx.stroke();
+      // pipeline stage labels far away
+      ctx.fillStyle = colors.ink3; ctx.globalAlpha = 0.5;
+      ctx.font = '500 ' + Math.round(B * 0.34) + 'px "IBM Plex Mono", monospace';
+      const stages = ['build', 'unit tests', 'e2e', 'staging', 'release'];
+      const span = 9;
+      const first = Math.floor((distance * 0.3) / span) - 1;
+      for (let i = first; i < first + Math.ceil(w / (span * B / 1)) + 3; i++) {
+        const x = (i * span - distance * 0.3 + PX) * B;
+        if (x < -200 || x > w + 50) continue;
+        const label = stages[((i % stages.length) + stages.length) % stages.length];
+        ctx.fillText(label, x, B * 1.25);
+        ctx.fillRect(x, B * 1.45, B * 1.4, Math.max(1, B * 0.04));
+      }
+      ctx.globalAlpha = 1;
+      // ground with ruler
+      ctx.fillStyle = colors.ground; ctx.fillRect(0, gy, w, h - gy);
+      ctx.fillStyle = colors.ink; ctx.fillRect(0, gy, w, Math.max(2, B * 0.06));
+      ctx.fillStyle = colors.ink3; ctx.font = '500 ' + Math.round(B * 0.28) + 'px "IBM Plex Mono", monospace';
+      const startM = Math.floor(distance - PX) - 1;
+      for (let m = startM; m < startM + w / B + 3; m++) {
+        const x = sx(m);
+        const major = m % 10 === 0;
+        ctx.fillRect(Math.round(x), gy, 1, major ? B * 0.36 : B * 0.16);
+        if (major && m >= 0) ctx.fillText(m + ' m', x + 4, gy + B * 0.66);
+      }
+      // obstacles
+      for (const o of obstacles) {
+        const x = sx(o.x);
+        if (x < -B * 2 || x > w + B) continue;
+        if (o.type === 'card') { if (!o.got) drawCard(ctx, x, sy(o.y + Math.sin(o.phase) * 0.12) - B * 0.7, B); continue; }
+        if (o.type === 'flyer') { drawBug(ctx, x, sy(o.y + Math.sin(o.phase) * 0.05) - B, B, colors.defect, true, o.phase); continue; }
+        if (o.type === 'crate') { drawCrate(ctx, x, sy(o.y) - B, B); continue; }
+        drawBug(ctx, x, sy(o.y) - B, B, colors.defect, false, 0);
+      }
+      // player
+      if (state !== 'dead' || performance.now() - deadAt < 60) {
+        const px = sx(distance), py = sy(player.y) - B;
+        ctx.save(); ctx.translate(px + B / 2, py + B / 2); ctx.rotate(player.rot);
+        if (golden) { ctx.shadowColor = colors.marker; ctx.shadowBlur = B * 0.5; }
+        ctx.fillStyle = golden ? colors.marker : colors.ink;
+        rr(-B / 2 + 1, -B / 2 + 1, B - 2, B - 2, B * 0.16); ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = golden ? colors.markerInk : colors.marker;
+        rr(-B * 0.04, -B * 0.24, B * 0.42, B * 0.2, B * 0.08); ctx.fill();
+        ctx.fillStyle = golden ? colors.marker : colors.ink;
+        ctx.fillRect(B * 0.16, -B * 0.2, B * 0.08, B * 0.12);
+        ctx.restore();
+        if (state === 'playing' && player.onGround && !reduced) {
+          ctx.fillStyle = colors.ink3; ctx.globalAlpha = 0.4;
+          for (let i = 1; i <= 3; i++) ctx.fillRect(px - i * B * 0.22, gy - B * 0.08 - ((now / 60 + i) % 3) * B * 0.03, B * 0.08, B * 0.08);
+          ctx.globalAlpha = 1;
+        }
+      }
+      for (const p of particles) {
+        ctx.fillStyle = p.color; ctx.globalAlpha = Math.max(0, Math.min(1, p.life * 2));
+        ctx.fillRect(sx(p.x) - p.size * B / 2, sy(p.y) - p.size * B / 2, p.size * B, p.size * B);
+      }
+      ctx.globalAlpha = 1;
+      if (milestone) {
+        ctx.globalAlpha = Math.min(1, milestone.t * 1.5);
+        ctx.font = '600 ' + Math.round(B * 0.36) + 'px "IBM Plex Mono", monospace';
+        const tw = ctx.measureText(milestone.text).width;
+        const bx = (w - tw) / 2 - 12, by = B * 1.9;
+        ctx.fillStyle = colors.marker; rr(bx, by, tw + 24, B * 0.7, 6); ctx.fill();
+        ctx.fillStyle = colors.markerInk; ctx.fillText(milestone.text, bx + 12, by + B * 0.47);
+        ctx.globalAlpha = 1;
+      }
+      ctx.restore();
+    }
+
+    /* loop */
+    let last = 0, acc = 0, raf = 0;
+    function frame(now) {
+      raf = requestAnimationFrame(frame);
+      const dt = Math.min(0.05, (now - (last || now)) / 1000); last = now;
+      if (state === 'playing') {
+        acc += dt;
+        while (acc >= STEP) { step(STEP); acc -= STEP; if (state !== 'playing') { acc = 0; break; } }
+        updateHud();
+      }
+      if (state === 'playing' || particles.length || shake > 0 || milestone) tickParticles(dt);
+      draw(now);
+      if (state !== 'playing' && !particles.length && shake <= 0) { cancelAnimationFrame(raf); raf = 0; }
+    }
+    function ensureLoop() { if (!raf) { last = 0; raf = requestAnimationFrame(frame); } }
+
+    function updateHud() {
+      hudScore.textContent = score() + ' m' + (tokens ? ', ' + tokens + ' tests' : '');
+      hudBest.textContent = 'Best ' + best + ' m';
+    }
+    function renderRuns() {
+      attemptsEl.textContent = attempts + (attempts === 1 ? ' attempt' : ' attempts') + ' this visit';
+      runsList.innerHTML = '';
+      if (!runs.length) { const li = document.createElement('li'); li.className = 'empty'; li.textContent = 'No runs yet. Your top five stay in this browser.'; runsList.appendChild(li); return; }
+      runs.forEach((r, i) => {
+        const li = document.createElement('li');
+        const a = document.createElement('span'); a.textContent = (i + 1) + '.  ' + r.s + ' m';
+        const b = document.createElement('span'); b.className = 'when';
+        b.textContent = new Date(r.d).toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
+        li.append(a, b); runsList.appendChild(li);
+      });
+    }
+
+    function setCard(html) { card.innerHTML = html; overlay.hidden = false; }
+    function hideOverlay() { overlay.hidden = true; }
+    function showReport(s, isBest) {
+      const sev = s < 120 ? ['Blocker', ''] : s < 320 ? ['Critical', ''] : s < 650 ? ['Major', 'major'] : ['Minor', 'minor'];
+      const c = CAUSES[cause] || CAUSES.bug;
+      const id = 'BUG-' + String(attempts).padStart(4, '0');
+      setCard(
+        '<div class="bug-report" style="display:grid;gap:12px">' +
+        '<div class="rh"><span>' + id + '</span><span class="sev ' + sev[1] + '">' + sev[0] + '</span></div>' +
+        '<h3>Run failed at ' + s + ' m: runner hit ' + c.what + '</h3>' +
+        '<dl>' +
+        '<dt>steps</dt><dd><ol><li>Start a run</li><li>Survive to ' + Math.floor(distance) + ' m</li><li>' + c.step + '</li></ol></dd>' +
+        '<dt>expected</dt><dd>Build keeps running</dd>' +
+        '<dt>actual</dt><dd>Run ended' + (isBest ? '. New best score.' : '') + '</dd>' +
+        '<dt>test cases</dt><dd>' + tokens + ' collected</dd>' +
+        '</dl>' +
+        '<div class="overlay-actions"><button class="btn btn-primary" type="button" data-start>Run again</button><span class="keys"><kbd>Space</kbd></span></div>' +
+        '</div>'
+      );
+      const btn = card.querySelector('[data-start]'); if (btn && root.contains(document.activeElement)) btn.focus({ preventScroll: true });
+    }
+    function showPaused() {
+      setCard('<h3>Paused</h3><p>Score so far: ' + score() + ' m</p><div class="overlay-actions"><button class="btn btn-primary" type="button" data-resume>Resume</button><span class="keys"><kbd>Space</kbd></span></div>');
+    }
+    function start() {
+      reset(); attempts++; renderRuns(); state = 'playing'; hideOverlay(); updateHud();
+      root.focus({ preventScroll: true }); ensureLoop();
+    }
+    function pause() { if (state !== 'playing') return; state = 'paused'; held = false; showPaused(); }
+    function resume() { if (state !== 'paused') return; state = 'playing'; hideOverlay(); root.focus({ preventScroll: true }); ensureLoop(); }
+    function primary() {
+      if (state === 'playing') { held = true; jump(); }
+      else if (state === 'paused') resume();
+      else if (state === 'dead') { if (reportShown) start(); }
+      else start();
+    }
+
+    overlay.addEventListener('click', e => {
+      const t = e.target.closest('button');
+      if (t && t.hasAttribute('data-start')) { e.stopPropagation(); start(); }
+      else if (t && t.hasAttribute('data-resume')) { e.stopPropagation(); resume(); }
+    });
+    canvas.addEventListener('pointerdown', e => { if (e.button !== undefined && e.button !== 0) return; e.preventDefault(); primary(); });
+    window.addEventListener('pointerup', () => { held = false; });
+    window.addEventListener('pointercancel', () => { held = false; });
+    const JUMP_KEYS = [' ', 'Spacebar', 'ArrowUp', 'w', 'W'];
+    document.addEventListener('keydown', e => {
+      const inGame = root.contains(document.activeElement);
+      const tag = (document.activeElement && document.activeElement.tagName) || '';
+      if (/INPUT|TEXTAREA|SELECT/.test(tag)) return;
+      if (!(inGame || state === 'playing')) return;
+      if (JUMP_KEYS.includes(e.key)) {
+        if (document.activeElement && document.activeElement.tagName === 'BUTTON' && state !== 'playing' && state !== 'dead') return;
+        e.preventDefault(); if (e.repeat && state !== 'playing') return; primary();
+      } else if (e.key === 'p' || e.key === 'P' || e.key === 'Escape') {
+        if (state === 'playing') { e.preventDefault(); pause(); } else if (state === 'paused') { e.preventDefault(); resume(); }
+      }
+    });
+    document.addEventListener('keyup', e => { if (JUMP_KEYS.includes(e.key)) held = false; });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); });
+    window.addEventListener('blur', () => { held = false; });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(es => es.forEach(en => { visible = en.isIntersecting; if (!visible) pause(); }), { threshold: 0.25 }).observe(root);
+    }
+    if ('ResizeObserver' in window) new ResizeObserver(resize).observe(canvas); else window.addEventListener('resize', resize);
+    const recolor = () => { readColors(); drawLegend(); if (state !== 'playing') draw(0); };
+    new MutationObserver(recolor).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    mq.addEventListener && mq.addEventListener('change', recolor);
+
+    function drawLegend() {
+      $$('canvas[data-legend]').forEach(cv => {
+        const c = cv.getContext('2d'); c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, cv.width, cv.height);
+        const B = 40, ox = 8, oy = 8;
+        const t = cv.dataset.legend;
+        if (t === 'crate') {
+          c.fillStyle = colors.ground; c.strokeStyle = colors.ink; c.lineWidth = 2.4;
+          c.beginPath(); c.roundRect ? c.roundRect(ox + 1, oy + 1, B - 2, B - 2, 4) : c.rect(ox + 1, oy + 1, B - 2, B - 2); c.fill(); c.stroke();
+          c.fillStyle = colors.defect; c.fillRect(ox + B * 0.2, oy + B * 0.22, B * 0.6, B * 0.12);
+          c.fillStyle = colors.ink3; c.fillRect(ox + B * 0.2, oy + B * 0.46, B * 0.44, B * 0.08); c.fillRect(ox + B * 0.2, oy + B * 0.62, B * 0.32, B * 0.08);
+        } else if (t === 'card') {
+          const w = B * 0.62, h = B * 0.7, x = ox + (B - w) / 2, y = oy + (B - h) / 2;
+          c.fillStyle = colors.marker; c.beginPath(); c.roundRect ? c.roundRect(x, y, w, h, 3) : c.rect(x, y, w, h); c.fill();
+          c.fillStyle = colors.markerInk; c.globalAlpha = 0.75;
+          c.fillRect(x + w * 0.18, y + h * 0.22, w * 0.64, h * 0.08); c.fillRect(x + w * 0.18, y + h * 0.44, w * 0.5, h * 0.08); c.fillRect(x + w * 0.18, y + h * 0.66, w * 0.58, h * 0.08);
+          c.globalAlpha = 1;
+        } else {
+          drawBug(c, ox, oy - 2, B, colors.defect, t === 'flyer', 1.2);
+        }
+      });
+    }
+
+    renderRuns(); updateHud(); drawLegend(); resize();
+    return {
+      setGolden(v) { golden = v; if (state !== 'playing') draw(0); },
+      _debug: () => ({ state, distance, score: score(), tokens, obstacles: obstacles.length, best, golden, y: player.y })
+    };
+  })();
+
+  /* ---------- horizontal travel (desktop) ---------- */
+  const Travel = (() => {
+    const root = document.documentElement;
+    const main = $('#main'), pin = $('#hPin'), track = $('#hTrack'), grid = $('.h-grid');
+    const bar = $('#hBar'), nowEl = $('#hNow'), nameEl = $('#hName'), totalEl = $('#hTotal');
+    const header = $('.site-header');
+    const panels = $$('#hTrack > section');
+    const names = { top: 'scroll to travel', about: 'about', experience: 'experience', work: 'work', lab: 'ai lab', skills: 'skills', contact: 'contact', play: 'play' };
+    totalEl.textContent = String(panels.length).padStart(2, '0');
+    const mqH = window.matchMedia('(min-width: 1024px) and (min-height: 700px)');
+    let on = false, start = 0, dist = 1, current = 0, target = 0, expected = 0, raf = 0, idx = -1;
+    let anchorIdx = 0, anchorDelta = 0, pending = null;
+
+    const clampT = () => Math.min(dist, Math.max(0, window.scrollY - start));
+    function apply() {
+      expected = current;
+      pin.scrollLeft = current;
+      grid.style.transform = 'translate3d(' + (current * 0.55).toFixed(1) + 'px,0,0)';
+      bar.style.transform = 'scaleX(' + (current / dist).toFixed(4) + ')';
+      const probe = current + window.innerWidth * 0.45;
+      let i = 0;
+      panels.forEach((pn, k) => { if (pn.offsetLeft <= probe) i = k; });
+      anchorIdx = i; anchorDelta = current - panels[i].offsetLeft;
+      if (i !== idx) {
+        idx = i;
+        nowEl.textContent = String(i + 1).padStart(2, '0');
+        nameEl.textContent = names[panels[i].id] || panels[i].id;
+        const id = panels[i].id === 'top' ? '' : '#' + panels[i].id;
+        $$('.nav a').forEach(a => a.setAttribute('aria-current', String(a.getAttribute('href') === id)));
+      }
+    }
+    function loop() {
+      raf = 0;
+      const d = target - current;
+      if (reduced || Math.abs(d) < 0.5) current = target;
+      else { current += d * 0.16; raf = requestAnimationFrame(loop); }
+      apply();
+      if (pending && !raf && Math.abs(window.scrollY - yFor(pending)) < 1) pending = null;
+    }
+    function onScroll() { if (!on) return; target = clampT(); if (!raf) raf = requestAnimationFrame(loop); }
+    function measure() {
+      if (!on) return;
+      const hh = header.offsetHeight;
+      const ph = window.innerHeight - hh;
+      root.style.setProperty('--panel-h', ph + 'px');
+      dist = Math.max(1, track.scrollWidth - pin.clientWidth);
+      main.style.height = (ph + dist) + 'px';
+      start = main.getBoundingClientRect().top + window.scrollY - hh;
+      // Layout changed (fonts, resize): stay on the same spot of the same panel.
+      const keepX = Math.min(dist, Math.max(0, panels[anchorIdx].offsetLeft + anchorDelta));
+      if (Math.abs(start + keepX - window.scrollY) > 1) window.scrollTo({ top: start + keepX, behavior: 'instant' });
+      current = target = clampT();
+      apply();
+      if (pending) goTo(pending);
+    }
+    // Anything that scrolls the pin itself (Tab focus, find in page, scrollIntoView) moves the page to match.
+    pin.addEventListener('scroll', () => {
+      if (!on) return;
+      const sl = pin.scrollLeft;
+      if (Math.abs(sl - expected) > 2) {
+        current = target = Math.min(dist, sl);
+        window.scrollTo({ top: start + current, behavior: 'instant' });
+        apply();
+      }
+    }, { passive: true });
+    function yFor(panel) { return start + Math.min(panel.offsetLeft, dist); }
+    function goTo(panel, instant) {
+      if (!on) { panel.scrollIntoView({ behavior: instant || reduced ? 'instant' : 'smooth' }); return; }
+      const y = yFor(panel);
+      pending = instant ? null : panel;
+      anchorIdx = panels.indexOf(panel); anchorDelta = 0;
+      if (instant) { window.scrollTo({ top: y, behavior: 'instant' }); current = target = clampT(); apply(); }
+      else window.scrollTo({ top: y, behavior: reduced ? 'instant' : 'smooth' });
+    }
+    function set(next) {
+      let keep = idx >= 0 ? panels[idx] : null;
+      if (!on && next) {
+        // Coming from the vertical layout: keep the section that is on screen.
+        keep = panels[0];
+        panels.forEach(pn => { if (pn.getBoundingClientRect().top <= window.innerHeight * 0.4) keep = pn; });
+      }
+      on = next;
+      root.classList.toggle('is-h', on);
+      if (on) { measure(); if (keep) goTo(keep, true); }
+      else {
+        main.style.height = ''; pin.scrollLeft = 0; grid.style.transform = ''; root.style.removeProperty('--panel-h');
+        if (keep && keep.id !== 'top') keep.scrollIntoView({ behavior: 'instant' });
+        idx = -1;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', () => { if (on) measure(); });
+    if ('ResizeObserver' in window) new ResizeObserver(() => { if (on) measure(); }).observe(track);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (on) measure(); });
+    const onMq = e => set(e.matches);
+    mqH.addEventListener ? mqH.addEventListener('change', onMq) : mqH.addListener(onMq);
+
+    // Section links travel to their panel.
+    document.addEventListener('click', e => {
+      const a = e.target.closest('a[href^="#"]');
+      if (!a || !on) return;
+      const panel = panels.find(pn => '#' + pn.id === a.getAttribute('href'));
+      if (!panel) return;
+      e.preventDefault();
+      goTo(panel);
+      try { history.replaceState(null, '', a.getAttribute('href')); } catch (err) { /* sandboxed */ }
+    });
+    // Arrow keys step between panels; a sideways trackpad swipe travels too.
+    document.addEventListener('keydown', e => {
+      if (!on || e.altKey || e.ctrlKey || e.metaKey || e.defaultPrevented) return;
+      if (e.target.closest('input, textarea, select, [contenteditable], #game')) return;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const base = Math.max(0, idx);
+        goTo(panels[Math.min(panels.length - 1, Math.max(0, base + (e.key === 'ArrowRight' ? 1 : -1)))]);
+      }
+    });
+    window.addEventListener('wheel', e => {
+      if (!on || Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      window.scrollBy({ top: e.deltaX, behavior: 'instant' });
+    }, { passive: false });
+
+    set(mqH.matches);
+    // Deep links: the browser runs its own jump to the anchor around load, so align again after it.
+    const hashPanel = () => panels.find(pn => '#' + pn.id === location.hash);
+    function alignHash() { const panel = hashPanel(); if (on && panel) goTo(panel, true); }
+    if (location.hash) {
+      requestAnimationFrame(alignHash);
+      if (document.readyState === 'complete') setTimeout(alignHash, 60);
+      else window.addEventListener('load', () => { requestAnimationFrame(alignHash); setTimeout(alignHash, 120); }, { once: true });
+    }
+    return { isOn: () => on, state: () => ({ on, start, dist, current, target, idx, panel: idx >= 0 ? panels[idx].id : null }) };
+  })();
+  window.__travel = Travel;
+  window.__regressionRun = Game;
+})();
+</script>
+</body>
+</html>

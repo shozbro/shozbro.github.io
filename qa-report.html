@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portfolio QA Report</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: a test execution report. Summary first, then defects, then every test case. */
+:root {
+  --paper: #EEF1F5; --paper-2: #E3E8EF; --card: #F9FAFC; --ink: #121A2B; --ink-2: #47526A; --ink-3: #5B6680;
+  --line: #CCD4E0; --line-strong: #A9B4C6; --marker: #FFE14A; --marker-ink: #121A2B;
+  --pass: #0D6644; --defect: #B42A28; --flaky: #8A5700; --minor: #2F5BB7;
+  --font-display: "Archivo", "Arial Narrow", Arial, sans-serif; --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif; --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #0C1220; --paper-2: #09101C; --card: #121A2C; --ink: #E7EBF2; --ink-2: #A9B3C6; --ink-3: #8592AA; --line: #212C42; --line-strong: #34415C; --pass: #45D49B; --defect: #FF7A75; --flaky: #F2B84B; --minor: #8DB0FF; color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #0C1220; --paper-2: #09101C; --card: #121A2C; --ink: #E7EBF2; --ink-2: #A9B3C6; --ink-3: #8592AA; --line: #212C42; --line-strong: #34415C; --pass: #45D49B; --defect: #FF7A75; --flaky: #F2B84B; --minor: #8DB0FF; color-scheme: dark; }
+* { box-sizing: border-box; }
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1rem/1.6 var(--font-body); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1100px; margin-inline: auto; padding-left: max(clamp(16px, 4vw, 40px), env(safe-area-inset-left, 0px)); padding-right: max(clamp(16px, 4vw, 40px), env(safe-area-inset-right, 0px)); padding-block: clamp(32px, 6vw, 72px); }
+.mono { font-family: var(--font-mono); }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; letter-spacing: -0.02em; line-height: 1.05; text-wrap: balance; }
+h1 { font-size: clamp(2rem, 1.2rem + 3.6vw, 3.6rem); font-weight: 900; font-stretch: 118%; }
+h2 { font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2rem); font-weight: 800; font-stretch: 110%; margin-bottom: 18px; }
+h3 { font-size: 1.08rem; font-weight: 700; line-height: 1.25; }
+.eyebrow { font: 500 0.82rem var(--font-mono); color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.lede { color: var(--ink-2); font-size: 1.08rem; max-width: 66ch; margin: 16px 0 0; }
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+section { margin-top: clamp(40px, 6vw, 64px); }
+.verdict { display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; padding: 8px 14px; border-radius: 8px; background: var(--marker); color: var(--marker-ink); font: 600 0.95rem var(--font-body); }
+.summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--line-strong); border-radius: 10px; background: var(--card); overflow: hidden; margin-top: 28px; }
+@media (max-width: 720px) { .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.summary div { padding: 18px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 0 -1px -1px 0; display: grid; gap: 4px; }
+.summary b { font: 800 2rem/1 var(--font-display); font-stretch: 115%; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.summary span { font-size: 0.85rem; color: var(--ink-3); }
+.summary .ok b { color: var(--pass); }
+.two { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 24px; }
+@media (max-width: 860px) { .two { grid-template-columns: minmax(0, 1fr); } }
+.panel { border: 1px solid var(--line-strong); border-radius: 10px; background: var(--card); padding: 18px; min-width: 0; }
+.panel h3 { margin-bottom: 12px; }
+.history { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.history li { display: grid; grid-template-columns: 52px minmax(0, 1fr) 52px; gap: 4px 12px; align-items: center; font-size: 0.88rem; }
+.history .note { grid-column: 2 / 4; color: var(--ink-3); font-size: 0.82rem; }
+.bar { height: 10px; border-radius: 3px; background: color-mix(in srgb, var(--defect) 30%, transparent); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--pass); }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.sevs { list-style: none; padding: 0; margin: 0 0 14px; display: grid; gap: 8px; }
+.sevs li { display: flex; justify-content: space-between; align-items: center; }
+.sevs b { font: 700 1.2rem var(--font-display); font-variant-numeric: tabular-nums; }
+.sev { font: 600 0.7rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 999px; }
+.s-critical { background: var(--defect); color: var(--card); }
+.s-major { background: color-mix(in srgb, var(--flaky) 18%, transparent); color: var(--flaky); }
+.s-minor { background: color-mix(in srgb, var(--minor) 14%, transparent); color: var(--minor); }
+.s-trivial { background: var(--paper-2); color: var(--ink-2); }
+.small { font-size: 0.88rem; color: var(--ink-2); margin: 0; }
+.env { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 16px; margin: 0; font-size: 0.92rem; }
+.env dt { font: 500 0.78rem var(--font-mono); color: var(--ink-3); padding-top: 3px; }
+.env dd { margin: 0; }
+.defects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 860px) { .defects { grid-template-columns: minmax(0, 1fr); } }
+.defect { border: 1px solid var(--line-strong); border-radius: 10px; background: var(--card); padding: 16px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.defect header { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.defect .id { font-weight: 600; font-size: 0.82rem; }
+.defect .st { margin-left: auto; font: 500 0.75rem var(--font-mono); color: var(--pass); }
+.defect dl { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; font-size: 0.88rem; }
+.defect dt { font: 500 0.74rem var(--font-mono); color: var(--ink-3); padding-top: 2px; }
+.defect dd { margin: 0; color: var(--ink-2); }
+.table-wrap:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.table-wrap { margin-top: 0; overflow-x: auto; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--card); }
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 560px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+thead th { font: 500 0.75rem var(--font-mono); color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.06em; background: var(--paper-2); }
+tr.grp th { font: 700 0.95rem var(--font-display); font-stretch: 108%; background: var(--paper); padding-top: 14px; }
+td.mono { white-space: nowrap; font-size: 0.8rem; color: var(--ink-2); }
+.detail { font: 400 0.78rem var(--font-mono); color: var(--ink-3); margin-top: 3px; overflow-wrap: anywhere; }
+.b { font: 600 0.68rem var(--font-mono); padding: 2px 7px; border-radius: 4px; letter-spacing: 0.05em; }
+.b.pass { background: color-mix(in srgb, var(--pass) 16%, transparent); color: var(--pass); }
+.b.fail { background: color-mix(in srgb, var(--defect) 14%, transparent); color: var(--defect); }
+ul.plain { margin: 0; padding-left: 1.1em; display: grid; gap: 8px; color: var(--ink-2); font-size: 0.92rem; }
+footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line); font: 500 0.8rem var(--font-mono); color: var(--ink-3); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="eyebrow"><span>Test execution report</span><span>27 October 2026</span><span>Tester: Muhammad Shehroz Mumtaz</span></p>
+  <h1>Portfolio QA Report</h1>
+  <p class="lede">I tested my own portfolio the way I test client products: an automated Playwright suite across functional, responsive, horizontal travel, accessibility, robustness and performance checks, plus visual review in light and dark themes on desktop and phone widths. Every defect below was found, fixed and verified by a rerun.</p>
+  <p class="verdict">Release verdict: ready to ship. 61 of 61 tests pass, 0 open defects.</p>
+
+  <div class="summary" role="group" aria-label="Summary">
+    <div class="ok"><b>61/61</b><span>tests passing in final run</span></div>
+    <div><b>18</b><span>product defects found and fixed</span></div>
+    <div><b>9</b><span>full suite runs</span></div>
+    <div><b>17</b><span>window sizes, 320 px phone to 2560 px desktop</span></div>
+  </div>
+
+  <section aria-labelledby="h-hist">
+    <h2 id="h-hist">Run history and defect severity</h2>
+    <div class="two">
+      <div class="panel"><h3>Pass rate by run</h3><ol class="history"><li><span class="mono">Run 1</span><span class="bar"><i style="width:76.6%"></i></span><span class="mono num">36/47</span><span class="note">First execution, after 8 visual fixes</span></li><li><span class="mono">Run 2</span><span class="bar"><i style="width:87.2%"></i></span><span class="mono num">41/47</span><span class="note">After fixing 4 defects and 3 test scripts</span></li><li><span class="mono">Run 3</span><span class="bar"><i style="width:100.0%"></i></span><span class="mono num">47/47</span><span class="note">After fixing 2 more defects and 1 test script</span></li><li><span class="mono">Run 4</span><span class="bar"><i style="width:100.0%"></i></span><span class="mono num">47/47</span><span class="note">Vertical layout signed off</span></li><li><span class="mono">Run 5</span><span class="bar"><i style="width:93.4%"></i></span><span class="mono num">57/61</span><span class="note">Horizontal travel added, 14 new tests</span></li><li><span class="mono">Run 6</span><span class="bar"><i style="width:98.4%"></i></span><span class="mono num">60/61</span><span class="note">Section memory and layout anchoring fixed</span></li><li><span class="mono">Run 7</span><span class="bar"><i style="width:98.4%"></i></span><span class="mono num">60/61</span><span class="note">Deep link failed intermittently</span></li><li><span class="mono">Run 8</span><span class="bar"><i style="width:100.0%"></i></span><span class="mono num">61/61</span><span class="note">Deep link re-aligned after load</span></li><li><span class="mono">Run 9</span><span class="bar"><i style="width:100.0%"></i></span><span class="mono num">61/61</span><span class="note">Repeat run to check for flakiness</span></li></ol></div>
+      <div class="panel">
+        <h3>Defects by severity</h3>
+        <ul class="sevs"><li><span class="sev s-critical">Critical</span><b>1</b></li><li><span class="sev s-major">Major</span><b>9</b></li><li><span class="sev s-minor">Minor</span><b>7</b></li><li><span class="sev s-trivial">Trivial</span><b>1</b></li></ul>
+        <p class="small">All fixed. Found by: automated tests and layout measurement (6), axe-core and html-validate (3), visual review (9).</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-env">
+    <h2 id="h-env">Scope and environment</h2>
+    <div class="two">
+      <div class="panel">
+        <dl class="env">
+          <dt>browser</dt><dd>Chromium 141 (Playwright 1.56), headless, Linux</dd>
+          <dt>build</dt><dd>Static index.html served from a local web server, web fonts served locally to match production</dd>
+          <dt>layouts</dt><dd>Vertical below 1024 px wide or 700 px tall; horizontal travel above. Tested at 320, 360, 390, 414, 768, 900, 960, 1023, 1024 px wide and at 1280x720, 1366x768, 1440x900, 1536x864, 1920x1080, 2560x1440</dd>
+          <dt>themes</dt><dd>Light, dark, system preference and manual toggle</dd>
+          <dt>tools</dt><dd>Playwright, axe-core 4.10 (WCAG 2.1 AA and best practice), html-validate 9</dd>
+          <dt>emulation</dt><dd>Touch and mobile, reduced motion, blocked storage, refused clipboard, failed web fonts, trackpad sideways swipes, live window resizing</dd>
+        </dl>
+      </div>
+      <div class="panel">
+        <h3>Not covered</h3>
+        <ul class="plain">
+          <li>Firefox and Safari engines. Only Chromium was available in the test environment.</li>
+          <li>Physical phones and real screen readers. Accessibility was checked with axe-core and keyboard tests only.</li>
+          <li>The live GitHub Pages deployment and slow network conditions.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-def">
+    <h2 id="h-def">Defect log</h2>
+    <div class="defects"><article class="defect">
+  <header><span class="mono id">DEF-11</span><span class="sev s-critical">Critical</span><span class="st">Fixed and verified</span></header>
+  <h3>Corrupted saved data stopped every script on the page</h3>
+  <dl><dt>found</dt><dd>Automated</dd><dt>issue</dt><dd>If the browser held a malformed saved value for the hidden bugs, a JavaScript error halted the whole script, so the AI lab and the game stopped working too.</dd><dt>fix</dt><dd>Saved values are validated before use and ignored when malformed.</dd><dt>verified by</dt><dd class="mono">TC-35</dd></dl>
+</article><article class="defect">
+  <header><span class="mono id">DEF-01</span><span class="sev s-major">Major</span><span class="st">Fixed and verified</span></header>
+  <h3>Highlighted phrases unreadable in dark mode</h3>
+  <dl><dt>found</dt><dd>Visual review</dd><dt>issue</dt><dd>In dark mode the yellow highlighter covered only the lower half of light text, so &quot;before your users do&quot; was hard to read.</dd><dt>fix</dt><dd>In dark mode the highlight now covers the full line height and the text switches to dark ink.</dd><dt>verified by</dt><dd class="mono">TC-11-dark</dd></dl>
+</article><article class="defect">
+  <header><span class="mono id">DEF-09</span><span class="sev s-major">Major</span><span class="st">Fixed and verified</span></header>
+  <h3>Secondary text below WCAG AA contrast</h3>
+  <dl><dt>found</dt><dd>axe-core</dd><dt>issue</dt><dd>Labels and captions measured 3.9:1 in light mode and 4.43:1 in dark mode against a 4.5:1 requirement (76 elements).</dd><dt>fix</dt><dd>Secondary grey darkened in light mode and lightened in dark mode; both now above 4.6:1.</dd><dt>verified by</dt><dd class="mono">TC-36</dd></dl>
+</article><article class="defect">
+  <header><span class="mono id">DEF-12</span><span class="sev s-major">Major</span><span class="st">Fixed and verified</span></header>
+  <h3>Caught bugs reset to 0 after reload</h3>
+  <dl><dt>found</dt><dd>Automated</dd><dt>issue</dt><dd>Caught bugs were saved, but the counter was never drawn from saved data on load, so it showed 0 of 3 and the golden runner looked locked.</dd><dt>fix</dt><dd>Counter renders from saved data on page load.</dd><dt>verified by</dt><dd class="mono">TC-15</dd></dl>
+</article><article class="defect">
+  <header><span class="mono id">DEF-13</span><span class="sev s-major">Major</span><span class="st">Fixed and verified</span></header>
+  <h3>Run again ignored Space right after a crash</h3>
+  <dl><dt>found</dt><dd>Automated</dd><dt>issue</dt><dd>A Space press as the bug report appeared was swallowed by a fixed 350 ms guard, so the button felt unresponsive.</dd><dt>fix</dt><dd>Restart is allowed as soon as the bug report is on screen.</dd><dt>verified by</dt><dd class="mono">TC-28</dd></dl>
+</article><article class="defect">
+  <header><span class="mono id">DEF-04</span><span class="sev s-major">Major</span><span class="st">Fixed and verified</span></header>
+  <h3>Game start card overflowed the canvas on phones</h3>
+  <dl><dt>found</dt><dd>Visual review</dd><dt>issue</dt><dd>On a 390 px phone the start card was taller than the game and showed keyboard instructions to touch users.</dd><dt>fix</dt><dd>Compact card on small screens and touch-specific instructions.</dd><dt>verified by</dt><dd class="mono">TC-31-320, TC-31-390</dd></dl>
+</article><article class="defect">
+  <header><span class="mono id">DEF-02</span><span class="sev s-major">Major</span><span class="st">Fixed and verified</span></header>
+  <h3>Experience tool tags stretched into full-width bars</h3>
+  <dl><dt>found</dt><dd>Visual review</dd><dt>issue</dt><dd>A more specific list rule overrode the tag style, stacking each tag as a full-width bar.</dd><dt>fix</dt><dd>List rule scoped to exclude tag lists.</dd><dt>verified by</dt><dd class="mono">Visual</dd></dl>
+</article><article class="defect">
+  <header><span class="mono id">DEF-14</span><span class="sev s-minor">Minor</span><span class="st">Fixed and verified</span></header>
+  <h3>HTML and ARIA validation errors</h3>
+  <dl><dt>found</dt><dd>html-validate, axe-core</dd><dt>issue</dt><dd>aria-label on 22 elements that cannot carry it, two navigation landmarks with the same name, complementary landmarks nested inside main, lowercase doctype.</dd><dt>fix</dt><dd>Roles added or labels removed, landmarks renamed or converted, doctype uppercased.</dd><dt>verified by</dt><dd class="mono">TC-39, TC-36</dd></dl>
+</article><article class="defect">
+  <header><span class="mono id">DEF-10</span><span class="sev s-minor">Minor</span><span class="st">Fixed and verified</span></header>
+  <h3>PASS badges below contrast requirement</h3>
+  <dl><dt>found</dt><dd>axe-core</dd><dt>issue</dt><dd>Green PASS badges and the verdict pill measured 4.42:1.</dd><dt>fix</dt><dd>Pass green darkened to 5.5:1 on its tint.</dd><dt>verified by</dt><dd class="mono">TC-36</dd></dl>
+</article><article class="defect">
+  <header><span class="mono id">DEF-05</span><span class="sev s-minor">Minor</span><span class="st">Fixed and verified</span></header>
+  <h3>Hero test console clipped on phones</h3>
+  <dl><dt>found</dt><dd>Visual review</dd><dt>issue</dt><dd>Long test names ran off the right edge of the console at 360 px.</dd><dt>fix</dt><dd>Lines wrap on small screens and timings are hidden.</dd><dt>verified by</dt><dd class="mono">TC-14</dd></dl>
+</article><article class="defect">
+  <header><span class="mono id">DEF-06</span><span class="sev s-minor">Minor</span><span class="st">Fixed and verified</span></header>
+  <h3>Hidden bug overlapped console text on phones</h3>
+  <dl><dt>found</dt><dd>Visual review</dd><dt>issue</dt><dd>The hidden bug in the hero sat on top of the run duration.</dd><dt>fix</dt><dd>Reserved space at the end of the summary line.</dd><dt>verified by</dt><dd class="mono">TC-16</dd></dl>
+</article><article class="defect">
+  <header><span class="mono id">DEF-03</span><span class="sev s-minor">Minor</span><span class="st">Fixed and verified</span></header>
+  <h3>Pipeline connectors stranded when wrapping</h3>
+  <dl><dt>found</dt><dd>Visual review</dd><dt>issue</dt><dd>Connector lines appeared at the start of wrapped rows in the project pipelines.</dd><dt>fix</dt><dd>Stages are now numbered chips with no connectors.</dd><dt>verified by</dt><dd class="mono">Visual</dd></dl>
+</article><article class="defect">
+  <header><span class="mono id">DEF-07</span><span class="sev s-minor">Minor</span><span class="st">Fixed and verified</span></header>
+  <h3>Email broke mid-word on phones</h3>
+  <dl><dt>found</dt><dd>Visual review</dd><dt>issue</dt><dd>The email address split across two lines at 390 px.</dd><dt>fix</dt><dd>Contact rows stack their label above the value on small screens.</dd><dt>verified by</dt><dd class="mono">Visual</dd></dl>
+</article><article class="defect">
+  <header><span class="mono id">DEF-18</span><span class="sev s-major">Major</span><span class="st">Fixed and verified</span></header>
+  <h3>Deep link landed 60 px off, about 1 load in 3</h3>
+  <dl><dt>found</dt><dd>Automated</dd><dt>issue</dt><dd>Opening the page at #lab sometimes stopped part-way into the previous panel. The browser&#x27;s own jump to the anchor ran after the page had positioned itself.</dd><dt>fix</dt><dd>The deep link is re-applied after the browser finishes loading. Verified with 10 cold loads per run.</dd><dt>verified by</dt><dd class="mono">TC-51</dd></dl>
+</article><article class="defect">
+  <header><span class="mono id">DEF-17</span><span class="sev s-major">Major</span><span class="st">Fixed and verified</span></header>
+  <h3>Resizing from tablet to desktop lost your place</h3>
+  <dl><dt>found</dt><dd>Automated</dd><dt>issue</dt><dd>Widening the window from the vertical layout into horizontal travel always jumped back to the first panel.</dd><dt>fix</dt><dd>The section on screen is remembered across the switch in both directions.</dd><dt>verified by</dt><dd class="mono">TC-50</dd></dl>
+</article><article class="defect">
+  <header><span class="mono id">DEF-15</span><span class="sev s-major">Major</span><span class="st">Fixed and verified</span></header>
+  <h3>Intro panel clipped on common laptop screens</h3>
+  <dl><dt>found</dt><dd>Layout measurement</dd><dt>issue</dt><dd>At 1366x768 and 1280x720 the intro was 5 to 31 px taller than the screen, so the key figures sat under the tool ticker.</dd><dt>fix</dt><dd>Intro type and spacing scale with screen height below 840 px.</dd><dt>verified by</dt><dd class="mono">TC-44</dd></dl>
+</article><article class="defect">
+  <header><span class="mono id">DEF-16</span><span class="sev s-minor">Minor</span><span class="st">Fixed and verified</span></header>
+  <h3>Panel counter overlapped the tool ticker</h3>
+  <dl><dt>found</dt><dd>Visual review</dd><dt>issue</dt><dd>The 01 / 08 counter sat on top of the scrolling tool names in the intro.</dd><dt>fix</dt><dd>Counter moved to the top-right corner.</dd><dt>verified by</dt><dd class="mono">Visual</dd></dl>
+</article><article class="defect">
+  <header><span class="mono id">DEF-08</span><span class="sev s-trivial">Trivial</span><span class="st">Fixed and verified</span></header>
+  <h3>Best runs header wrapped awkwardly</h3>
+  <dl><dt>found</dt><dd>Visual review</dd><dt>issue</dt><dd>The attempts counter squeezed into the panel header.</dd><dt>fix</dt><dd>Attempts moved below the list.</dd><dt>verified by</dt><dd class="mono">Visual</dd></dl>
+</article></div>
+  </section>
+
+  <section aria-labelledby="h-tc">
+    <h2 id="h-tc">Test cases, final run</h2>
+    <section class="table-wrap" tabindex="0" aria-label="Test cases table">
+      <table>
+        <thead><tr><th scope="col">ID</th><th scope="col">Test case and evidence</th><th scope="col">Result</th><th scope="col" class="num">Time</th></tr></thead>
+        <tbody><tr class="grp"><th colspan="4" scope="colgroup">Functional</th></tr><tr><td class="mono">TC-01</td><td>Page loads with correct title and zero JS or console errors<div class="detail">title &quot;Shehroz Mumtaz, AI QA&quot;</div></td><td><span class="b pass">PASS</span></td><td class="mono num">2.8s</td></tr><tr class="grp"><th colspan="4" scope="colgroup">Responsive</th></tr><tr><td class="mono">TC-02-light</td><td>No horizontal page scroll at 9 widths (light)<div class="detail">320, 360, 390, 414, 768, 1024, 1280, 1440, 1920 px</div></td><td><span class="b pass">PASS</span></td><td class="mono num">4.6s</td></tr><tr><td class="mono">TC-02-dark</td><td>No horizontal page scroll at 9 widths (dark)<div class="detail">320, 360, 390, 414, 768, 1024, 1280, 1440, 1920 px</div></td><td><span class="b pass">PASS</span></td><td class="mono num">4.6s</td></tr><tr><td class="mono">TC-03</td><td>Side gutter is at least 16px at 320px</td><td><span class="b pass">PASS</span></td><td class="mono num">0.2s</td></tr><tr><td class="mono">TC-04</td><td>Layout holds when web fonts fail to load (fallback fonts)</td><td><span class="b pass">PASS</span></td><td class="mono num">0.7s</td></tr><tr class="grp"><th colspan="4" scope="colgroup">Navigation</th></tr><tr><td class="mono">TC-05</td><td>Every in-page link points to an existing element<div class="detail">18 anchors checked</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.2s</td></tr><tr><td class="mono">TC-06</td><td>Vertical layout (960px): nav scrolls each section under the sticky header and marks it current<div class="detail">7 sections</div></td><td><span class="b pass">PASS</span></td><td class="mono num">3.5s</td></tr><tr><td class="mono">TC-07</td><td>Mobile menu opens, closes on link click and on Escape, with correct aria-expanded</td><td><span class="b pass">PASS</span></td><td class="mono num">0.6s</td></tr><tr><td class="mono">TC-08</td><td>Skip link is the first Tab stop and moves to main content</td><td><span class="b pass">PASS</span></td><td class="mono num">0.4s</td></tr><tr class="grp"><th colspan="4" scope="colgroup">Theme</th></tr><tr><td class="mono">TC-09</td><td>Theme toggle switches theme, updates its label, and persists across reload<div class="detail">rgb(238, 241, 245) to rgb(12, 18, 32)</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.6s</td></tr><tr><td class="mono">TC-10</td><td>System dark preference is honoured with no data-theme set<div class="detail">rgb(12, 18, 32)</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.2s</td></tr><tr><td class="mono">TC-11-light</td><td>Highlighted phrases stay readable in light mode<div class="detail">2 highlights</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.2s</td></tr><tr><td class="mono">TC-11-dark</td><td>Highlighted phrases stay readable in dark mode<div class="detail">2 highlights</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.2s</td></tr><tr class="grp"><th colspan="4" scope="colgroup">Hero</th></tr><tr><td class="mono">TC-12</td><td>Test-run console replays on load, ends fully visible, and Re-run replays it</td><td><span class="b pass">PASS</span></td><td class="mono num">6.5s</td></tr><tr><td class="mono">TC-13</td><td>With reduced motion the console is fully visible immediately</td><td><span class="b pass">PASS</span></td><td class="mono num">0.2s</td></tr><tr><td class="mono">TC-14</td><td>Hero test lines all fit or wrap inside the console on a 360px phone</td><td><span class="b pass">PASS</span></td><td class="mono num">0.2s</td></tr><tr class="grp"><th colspan="4" scope="colgroup">Easter egg</th></tr><tr><td class="mono">TC-15</td><td>Catching all 3 hidden bugs updates the counter, unlocks the golden runner and persists</td><td><span class="b pass">PASS</span></td><td class="mono num">0.8s</td></tr><tr><td class="mono">TC-16</td><td>Hidden bug buttons are at least 24px tap targets and do not overlap text</td><td><span class="b pass">PASS</span></td><td class="mono num">0.2s</td></tr><tr class="grp"><th colspan="4" scope="colgroup">AI lab</th></tr><tr><td class="mono">TC-17</td><td>Grounded sample passes all 12 assertions and reads &quot;Ready to ship&quot;<div class="detail">12 passed0 failedReady to ship</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.2s</td></tr><tr><td class="mono">TC-18-hallucinated</td><td>&quot;hallucinated&quot; sample fails exactly the expected assertions<div class="detail">5 failures as designed</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.4s</td></tr><tr><td class="mono">TC-18-leaky</td><td>&quot;leaky&quot; sample fails exactly the expected assertions<div class="detail">3 failures as designed</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.4s</td></tr><tr><td class="mono">TC-19</td><td>Invalid JSON fails the parse check and skips the other 11</td><td><span class="b pass">PASS</span></td><td class="mono num">0.4s</td></tr><tr><td class="mono">TC-20</td><td>Ctrl+Enter in the editor re-runs, and edge inputs (array, null, huge text) do not crash</td><td><span class="b pass">PASS</span></td><td class="mono num">0.5s</td></tr><tr class="grp"><th colspan="4" scope="colgroup">Contact</th></tr><tr><td class="mono">TC-21</td><td>Copy email copies the address to the clipboard</td><td><span class="b pass">PASS</span></td><td class="mono num">0.5s</td></tr><tr><td class="mono">TC-22</td><td>Copy email falls back to selecting the text when clipboard is refused</td><td><span class="b pass">PASS</span></td><td class="mono num">0.5s</td></tr><tr><td class="mono">TC-23</td><td>CV links resolve to a PDF; external links open safely in a new tab<div class="detail">cv.pdf 200, 63908 bytes; 1 external link(s)</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.6s</td></tr><tr class="grp"><th colspan="4" scope="colgroup">Game</th></tr><tr><td class="mono">TC-24</td><td>Start run: state becomes playing, distance and HUD advance<div class="detail">distance 6.0 after 0.7s</div></td><td><span class="b pass">PASS</span></td><td class="mono num">1.2s</td></tr><tr><td class="mono">TC-25</td><td>Space jumps the runner and the page does not scroll while playing<div class="detail">jump height at 120ms: 1.90 blocks</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.7s</td></tr><tr><td class="mono">TC-26</td><td>Space scrolls the page normally when the game is not focused or running</td><td><span class="b pass">PASS</span></td><td class="mono num">0.7s</td></tr><tr><td class="mono">TC-27</td><td>P pauses (distance frozen, overlay shown) and Space resumes</td><td><span class="b pass">PASS</span></td><td class="mono num">1.4s</td></tr><tr><td class="mono">TC-28</td><td>Crashing files a bug report, saves the best score and lists the run<div class="detail">BUG-0001BlockerRun failed at 15 m: runner hit a bugstepsStart a runSurvive to 15 mRun into a bug on the ground</div></td><td><span class="b pass">PASS</span></td><td class="mono num">2.6s</td></tr><tr><td class="mono">TC-29</td><td>Game auto-pauses when scrolled out of view and when the tab is hidden</td><td><span class="b pass">PASS</span></td><td class="mono num">2.1s</td></tr><tr><td class="mono">TC-30</td><td>Touch: tapping the canvas starts and jumps on a phone</td><td><span class="b pass">PASS</span></td><td class="mono num">0.7s</td></tr><tr><td class="mono">TC-31-320</td><td>Start card and bug report fit inside the game at 320px<div class="detail">bug report scrolls inside its card</div></td><td><span class="b pass">PASS</span></td><td class="mono num">2.4s</td></tr><tr><td class="mono">TC-31-390</td><td>Start card and bug report fit inside the game at 390px<div class="detail">bug report scrolls inside its card</div></td><td><span class="b pass">PASS</span></td><td class="mono num">2.3s</td></tr><tr><td class="mono">TC-32</td><td>Frame rate during play (headless Chromium)<div class="detail">61 fps</div></td><td><span class="b pass">PASS</span></td><td class="mono num">1.9s</td></tr><tr><td class="mono">TC-33</td><td>Resizing and switching theme mid-run do not crash the game</td><td><span class="b pass">PASS</span></td><td class="mono num">1.1s</td></tr><tr class="grp"><th colspan="4" scope="colgroup">Robustness</th></tr><tr><td class="mono">TC-34</td><td>Works with browser storage blocked (private mode)</td><td><span class="b pass">PASS</span></td><td class="mono num">2.5s</td></tr><tr><td class="mono">TC-35</td><td>Corrupted saved data is ignored safely</td><td><span class="b pass">PASS</span></td><td class="mono num">0.5s</td></tr><tr class="grp"><th colspan="4" scope="colgroup">Horizontal</th></tr><tr><td class="mono">TC-41</td><td>Horizontal travel turns on at desktop sizes and off on phones, tablets and short windows<div class="detail">9 window sizes</div></td><td><span class="b pass">PASS</span></td><td class="mono num">1.9s</td></tr><tr><td class="mono">TC-42</td><td>Scrolling down moves the page sideways and fills the progress bar<div class="detail">wheel 1200 moved 1200px sideways</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.7s</td></tr><tr><td class="mono">TC-43</td><td>With motion on, the eased travel settles exactly on the scroll position</td><td><span class="b pass">PASS</span></td><td class="mono num">1.8s</td></tr><tr><td class="mono">TC-44-light</td><td>Every panel fits its height with no clipping (light)<div class="detail">6 window sizes, 8 panels each</div></td><td><span class="b pass">PASS</span></td><td class="mono num">2.9s</td></tr><tr><td class="mono">TC-44-dark</td><td>Every panel fits its height with no clipping (dark)<div class="detail">6 window sizes, 8 panels each</div></td><td><span class="b pass">PASS</span></td><td class="mono num">3.0s</td></tr><tr><td class="mono">TC-45</td><td>Nav links travel to each panel, align it to the left edge and update nav and counter<div class="detail">7 panels, travel time 1189 to 1312 ms</div></td><td><span class="b pass">PASS</span></td><td class="mono num">9.2s</td></tr><tr><td class="mono">TC-46</td><td>Arrow keys step between panels, but not while typing in the lab</td><td><span class="b pass">PASS</span></td><td class="mono num">1.0s</td></tr><tr><td class="mono">TC-47</td><td>Tab focus on an off-screen control brings it into view and syncs the page</td><td><span class="b pass">PASS</span></td><td class="mono num">0.4s</td></tr><tr><td class="mono">TC-48</td><td>Find in page and scrollIntoView reach content in any direction</td><td><span class="b pass">PASS</span></td><td class="mono num">0.6s</td></tr><tr><td class="mono">TC-49</td><td>A sideways trackpad swipe travels the page</td><td><span class="b pass">PASS</span></td><td class="mono num">0.9s</td></tr><tr><td class="mono">TC-50</td><td>Resizing between desktop and tablet keeps you on the same section</td><td><span class="b pass">PASS</span></td><td class="mono num">1.2s</td></tr><tr><td class="mono">TC-51</td><td>Deep link to #lab opens on the lab panel (10 cold loads)<div class="detail">10 of 10 aligned</div></td><td><span class="b pass">PASS</span></td><td class="mono num">9.0s</td></tr><tr><td class="mono">TC-52</td><td>After the last panel the page releases to the footer</td><td><span class="b pass">PASS</span></td><td class="mono num">0.8s</td></tr><tr><td class="mono">TC-53</td><td>Game runs and auto-pauses when you travel away from its panel</td><td><span class="b pass">PASS</span></td><td class="mono num">3.9s</td></tr><tr class="grp"><th colspan="4" scope="colgroup">Accessibility</th></tr><tr><td class="mono">TC-36-light-1440</td><td>axe-core WCAG 2.1 AA scan: light, 1440px<div class="detail">0 violations</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.6s</td></tr><tr><td class="mono">TC-36-light-390</td><td>axe-core WCAG 2.1 AA scan: light, 390px<div class="detail">0 violations</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.9s</td></tr><tr><td class="mono">TC-36-dark-1440</td><td>axe-core WCAG 2.1 AA scan: dark, 1440px<div class="detail">0 violations</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.7s</td></tr><tr><td class="mono">TC-36-dark-390</td><td>axe-core WCAG 2.1 AA scan: dark, 390px<div class="detail">0 violations</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.9s</td></tr><tr><td class="mono">TC-37</td><td>One h1, no skipped heading levels<div class="detail">33 headings</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.2s</td></tr><tr><td class="mono">TC-38</td><td>Every interactive element shows a visible focus indicator<div class="detail">checked 38 tab stops</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.4s</td></tr><tr class="grp"><th colspan="4" scope="colgroup">Code quality</th></tr><tr><td class="mono">TC-39</td><td>HTML validates (html-validate, recommended rules)<div class="detail">valid</div></td><td><span class="b pass">PASS</span></td><td class="mono num">0.4s</td></tr><tr class="grp"><th colspan="4" scope="colgroup">Performance</th></tr><tr><td class="mono">TC-40</td><td>Load metrics: page weight, load time and long tasks<div class="detail">HTML 115 KB, 2 requests, DOMContentLoaded 118 ms, load 146 ms, longest task 87 ms (local server)</div></td><td><span class="b pass">PASS</span></td><td class="mono num">1.0s</td></tr></tbody>
+      </table>
+    </section>
+  </section>
+
+  <section aria-labelledby="h-sb">
+    <h2 id="h-sb">Test script fixes</h2>
+    <p class="small" style="margin-bottom:12px">Six failures across the runs were mistakes in the test code, not the site. They were fixed in the suite and are not counted as product defects.</p>
+    <ul class="plain"><li><span class="mono">TC-15</span> Clicked an already-caught bug without forcing, which Playwright correctly refused (the button is aria-disabled). Fixed with force: true.</li><li><span class="mono">TC-23</span> Read the PDF response body after closing the browser context. Reordered.</li><li><span class="mono">TC-38</span> Counted hidden elements as tab stops and then flagged the document body. Loop now stops when focus leaves the page.</li><li><span class="mono">TC-03</span> Flagged a screen-reader-only element as breaking the gutter. Excluded .sr-only.</li><li><span class="mono">TC-45</span> Its wait was already true at the moment of the click, so it measured nav travel mid-flight after a fixed delay. Now waits until the page has arrived.</li><li><span class="mono">TC-48</span> Expected scrollIntoView to make the target&#x27;s panel current. The browser correctly stops once the element is visible at the right edge. Now checks visibility and sync.</li></ul>
+  </section>
+
+  <footer><span>Muhammad Shehroz Mumtaz</span><a href="./">Back to the portfolio</a></footer>
+</main>
+</body>
+</html>
