@@ -1,11 +1,15 @@
 # Shehroz Mumtaz portfolio
 
-Static site: `index.html` and `cv.pdf`. No build step.
+Static site, no build step:
+- index.html: the portfolio
+- qa-report.html: the QA report for this site
+- cv.pdf: the CV
+- fifaworldcup/index.html and html2canvas.min.js: the FCF FIFA 2026 Fantasy League dashboard (no API keys, no network calls)
 
-## Publish on GitHub Pages
-1. Create a public repo named `<your-github-username>.github.io`.
-2. Upload `index.html`, `cv.pdf` and `qa-report.html` to the repo root.
-3. Settings > Pages > Source: Deploy from a branch, branch `main`, folder `/ (root)`.
-4. The site goes live at `https://<your-github-username>.github.io` within a minute or two.
-
-To update the CV, replace `cv.pdf` with a file of the same name.
+## Publish (repo: shozbro/shozbro.github.io)
+1. Unzip, open the repo on GitHub, click Add file > Upload files.
+2. Drag in everything from the unzipped folder, including the fifaworldcup folder, and commit. Existing files are replaced.
+3. GitHub Pages is already on for this repo. After a minute or two:
+   - https://shozbro.github.io (portfolio)
+   - https://shozbro.github.io/fifaworldcup/ (dashboard)
+4. Hard refresh (Ctrl+F5) if you still see the old version.
