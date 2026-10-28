@@ -355,6 +355,16 @@ p { margin: 0; }
 .flow li span::before { content: counter(stage); display: inline-grid; place-items: center; width: 17px; height: 17px; border-radius: 4px; background: var(--paper-2); color: var(--ink-2); font-size: 0.66rem; font-weight: 600; }
 .flow li.mine span { background: var(--marker); color: var(--marker-ink); border-color: transparent; }
 .flow li.mine span::before { background: color-mix(in srgb, var(--marker-ink) 14%, transparent); color: var(--marker-ink); }
+.client-work { margin-top: 28px; display: grid; gap: 16px; }
+.client-head h3 { font-size: clamp(1.3rem, 1.05rem + 0.9vw, 1.7rem); margin-top: 6px; }
+.client-head > p:last-child { color: var(--ink-2); margin-top: 8px; max-width: 60ch; }
+.client-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.client { border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--card); padding: 18px; display: grid; gap: 9px; align-content: start; min-width: 0; }
+.client h4 { font: 700 1.08rem/1.2 var(--font-display); font-stretch: 110%; letter-spacing: -0.01em; margin: 0; }
+.client p { color: var(--ink-2); font-size: 0.92rem; margin: 0; }
+.client .tags li { font-size: 0.7rem; padding: 1px 7px; }
+.client-link { justify-self: start; font: 600 0.82rem var(--font-body); color: var(--ink); text-underline-offset: 4px; }
+.client-link.muted { font: 500 0.72rem var(--font-mono); color: var(--flaky); border: 1px solid currentColor; border-radius: 999px; padding: 1px 8px; }
 .side-list { margin-top: 28px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
 @media (max-width: 1000px) { .side-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .side-list { grid-template-columns: minmax(0, 1fr); } }
@@ -756,6 +766,17 @@ kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); 
 .is-h .h-progress { display: block; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: transparent; }
 .is-h .h-progress span { display: block; height: 100%; background: var(--nav-mark); transform-origin: 0 50%; transform: scaleX(0); }
 
+/* footer in horizontal mode: out of the page flow so the travel ends exactly on the last panel (no vertical drift); it slides up once the last panel is reached */
+.is-h .site-footer {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; padding-block: 12px calc(12px + env(safe-area-inset-bottom, 0px));
+  background: color-mix(in srgb, var(--paper) 94%, transparent); backdrop-filter: saturate(1.4) blur(10px); -webkit-backdrop-filter: saturate(1.4) blur(10px);
+  transform: translateY(100%); transition: transform .35s cubic-bezier(.2,.7,.2,1);
+}
+.is-h.h-end .site-footer { transform: none; }
+.is-h.h-end .toast-wrap { bottom: calc(var(--footer-h, 56px) + 14px); }
+.is-h #play > .wrap { padding-bottom: calc(var(--footer-h, 56px) + clamp(20px, 4vh, 44px)); }
+@media (prefers-reduced-motion: reduce) { .is-h .site-footer { transition: none; } }
+
 /* hero */
 .is-h .hero > .wrap { padding-bottom: calc(clamp(20px, 4vh, 44px) + 60px); }
 .is-h .hero h1 { font-size: min(var(--step-4), 10.5vh); margin-top: 1.6vh; }
@@ -799,6 +820,12 @@ kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); 
 /* work: project cards in a row, side projects as a final column */
 .is-h .work-grid { display: flex; gap: 18px; align-items: stretch; }
 .is-h .case { width: 390px; flex: none; }
+/* client products */
+.is-h .client-work { display: flex; align-items: center; gap: 18px; flex: none; margin-top: 0; }
+.is-h .client-head { width: 250px; flex: none; }
+.is-h .client-list { grid-template-columns: none; grid-auto-flow: column; grid-template-rows: repeat(2, auto); grid-auto-columns: 290px; }
+.is-h .client { padding: 14px 16px; gap: 7px; }
+.is-h .client p { font-size: 0.86rem; }
 .is-h .side-list { margin-top: 0; width: 300px; flex: none; grid-template-columns: minmax(0, 1fr); }
 
 /* lab */
@@ -822,14 +849,23 @@ kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); 
 .is-h .game { width: min(780px, 50vw); flex: none; }
 .is-h .game canvas { height: min(400px, 46vh); }
 .is-h .game-side { width: 300px; flex: none; }
+/* the last panel fits exactly one screen, so the travel ends with the whole panel in view */
+.is-h #play > .wrap { width: calc(100vw - 1px); } /* plus the 1px panel border = exactly one screen */
+.is-h #play .section-head { width: clamp(240px, 20vw, 320px); }
+.is-h #play .game-layout { flex: 1 1 auto; min-width: 0; }
+.is-h #play .game { flex: 1 1 auto; width: auto; min-width: 0; max-width: 780px; }
+.is-h #play .game-side { width: clamp(240px, 21vw, 300px); }
+.is-h .footer-row { flex-wrap: nowrap; }
+.is-h .footer-row > span:first-child { white-space: nowrap; }
+.is-h .footer-row > span:nth-child(2) { flex: 1 1 auto; min-width: 0; text-align: right; }
 </style>
 </head>
 <body>
 <div class="boot" id="boot" aria-hidden="true" hidden>
   <div class="boot-inner mono">
     <p><span class="p">$</span> npx playwright test shehroz.spec.ts</p>
-    <p class="b2">Running <span data-qa="tests">87</span> tests</p>
-    <p class="b3"><b><span data-qa="passed">87</span> passed</b>, opening portfolio</p>
+    <p class="b2">Running <span data-qa="tests">92</span> tests</p>
+    <p class="b3"><b><span data-qa="passed">92</span> passed</b>, opening portfolio</p>
   </div>
 </div>
 <a class="skip" href="#main">Skip to content</a>
@@ -956,7 +992,7 @@ kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); 
       <div class="section-head">
         <p class="spec"><span class="file">qa-report.html</span><span class="count">work sample</span></p>
         <h2 id="proofTitle">I tested this site like a <span class="pop">client product.</span></h2>
-        <p class="lede">Before anyone saw this portfolio, I wrote <b data-qa="tests">87</b> automated tests, ran the suite <b data-qa="runs">34</b> times and logged every defect I found. The report is a real sample of how deeply I test and how I write it up.</p>
+        <p class="lede">Before anyone saw this portfolio, I wrote <b data-qa="tests">92</b> automated tests, ran the suite <b data-qa="runs">42</b> times and logged every defect I found. The report is a real sample of how deeply I test and how I write it up.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="qa-report.html" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg>
@@ -968,15 +1004,15 @@ kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); 
       <div class="proof-sheet" role="group" aria-label="QA report summary">
         <header><span>execution summary</span><span class="verdict ok">Ready to ship</span></header>
         <dl class="proof-stats">
-          <div><dt>tests passing</dt><dd><span data-qa="passed">87</span>/<span data-qa="tests">87</span></dd></div>
-          <div><dt>defects found and fixed</dt><dd data-qa="defects">28</dd></div>
-          <div><dt>full suite runs</dt><dd data-qa="runs">34</dd></div>
+          <div><dt>tests passing</dt><dd><span data-qa="passed">92</span>/<span data-qa="tests">92</span></dd></div>
+          <div><dt>defects found and fixed</dt><dd data-qa="defects">30</dd></div>
+          <div><dt>full suite runs</dt><dd data-qa="runs">42</dd></div>
           <div><dt>window sizes tested</dt><dd>17</dd></div>
         </dl>
         <div class="proof-chart">
           <p class="mono">pass rate by run <span class="key"><i class="k-full"></i>all passed <i class="k-part"></i>some failed</span></p>
-          <!--QA-BARS--><ol class="bars"><li style="--h:76.6%" title="Run 1: 36 of 47"><span class="sr-only">Run 1: 36 of 47 passed</span></li><li style="--h:87.2%" title="Run 2: 41 of 47"><span class="sr-only">Run 2: 41 of 47 passed</span></li><li class="full" style="--h:100.0%" title="Run 3: 47 of 47"><span class="sr-only">Run 3: 47 of 47 passed</span></li><li class="full" style="--h:100.0%" title="Run 4: 47 of 47"><span class="sr-only">Run 4: 47 of 47 passed</span></li><li style="--h:93.4%" title="Run 5: 57 of 61"><span class="sr-only">Run 5: 57 of 61 passed</span></li><li style="--h:98.4%" title="Run 6: 60 of 61"><span class="sr-only">Run 6: 60 of 61 passed</span></li><li style="--h:98.4%" title="Run 7: 60 of 61"><span class="sr-only">Run 7: 60 of 61 passed</span></li><li class="full" style="--h:100.0%" title="Run 8: 61 of 61"><span class="sr-only">Run 8: 61 of 61 passed</span></li><li class="full" style="--h:100.0%" title="Run 9: 61 of 61"><span class="sr-only">Run 9: 61 of 61 passed</span></li><li class="full" style="--h:100.0%" title="Run 10: 63 of 63"><span class="sr-only">Run 10: 63 of 63 passed</span></li><li class="full" style="--h:100.0%" title="Run 11: 63 of 63"><span class="sr-only">Run 11: 63 of 63 passed</span></li><li style="--h:95.7%" title="Run 12: 67 of 70"><span class="sr-only">Run 12: 67 of 70 passed</span></li><li class="full" style="--h:100.0%" title="Run 13: 71 of 71"><span class="sr-only">Run 13: 71 of 71 passed</span></li><li class="full" style="--h:100.0%" title="Run 14: 71 of 71"><span class="sr-only">Run 14: 71 of 71 passed</span></li><li style="--h:98.8%" title="Run 15: 83 of 84"><span class="sr-only">Run 15: 83 of 84 passed</span></li><li style="--h:98.8%" title="Run 16: 83 of 84"><span class="sr-only">Run 16: 83 of 84 passed</span></li><li style="--h:98.8%" title="Run 17: 83 of 84"><span class="sr-only">Run 17: 83 of 84 passed</span></li><li class="full" style="--h:100.0%" title="Run 18: 84 of 84"><span class="sr-only">Run 18: 84 of 84 passed</span></li><li class="full" style="--h:100.0%" title="Run 19: 84 of 84"><span class="sr-only">Run 19: 84 of 84 passed</span></li><li class="full" style="--h:100.0%" title="Run 20: 85 of 85"><span class="sr-only">Run 20: 85 of 85 passed</span></li><li class="full" style="--h:100.0%" title="Run 21: 85 of 85"><span class="sr-only">Run 21: 85 of 85 passed</span></li><li class="full" style="--h:100.0%" title="Run 22: 86 of 86"><span class="sr-only">Run 22: 86 of 86 passed</span></li><li class="full" style="--h:100.0%" title="Run 23: 86 of 86"><span class="sr-only">Run 23: 86 of 86 passed</span></li><li class="full" style="--h:100.0%" title="Run 24: 86 of 86"><span class="sr-only">Run 24: 86 of 86 passed</span></li><li class="full" style="--h:100.0%" title="Run 25: 87 of 87"><span class="sr-only">Run 25: 87 of 87 passed</span></li><li class="full" style="--h:100.0%" title="Run 26: 87 of 87"><span class="sr-only">Run 26: 87 of 87 passed</span></li><li style="--h:96.6%" title="Run 27: 84 of 87"><span class="sr-only">Run 27: 84 of 87 passed</span></li><li style="--h:97.7%" title="Run 28: 85 of 87"><span class="sr-only">Run 28: 85 of 87 passed</span></li><li style="--h:98.9%" title="Run 29: 86 of 87"><span class="sr-only">Run 29: 86 of 87 passed</span></li><li style="--h:98.9%" title="Run 30: 86 of 87"><span class="sr-only">Run 30: 86 of 87 passed</span></li><li class="full" style="--h:100.0%" title="Run 31: 87 of 87"><span class="sr-only">Run 31: 87 of 87 passed</span></li><li style="--h:98.9%" title="Run 32: 86 of 87"><span class="sr-only">Run 32: 86 of 87 passed</span></li><li class="full" style="--h:100.0%" title="Run 33: 87 of 87"><span class="sr-only">Run 33: 87 of 87 passed</span></li><li class="full" style="--h:100.0%" title="Run 34: 87 of 87"><span class="sr-only">Run 34: 87 of 87 passed</span></li></ol><!--/QA-BARS-->
-          <p class="axis mono"><span>run 1</span><span data-qa="lastrun">run 34</span></p>
+          <!--QA-BARS--><ol class="bars"><li style="--h:76.6%" title="Run 1: 36 of 47"><span class="sr-only">Run 1: 36 of 47 passed</span></li><li style="--h:87.2%" title="Run 2: 41 of 47"><span class="sr-only">Run 2: 41 of 47 passed</span></li><li class="full" style="--h:100.0%" title="Run 3: 47 of 47"><span class="sr-only">Run 3: 47 of 47 passed</span></li><li class="full" style="--h:100.0%" title="Run 4: 47 of 47"><span class="sr-only">Run 4: 47 of 47 passed</span></li><li style="--h:93.4%" title="Run 5: 57 of 61"><span class="sr-only">Run 5: 57 of 61 passed</span></li><li style="--h:98.4%" title="Run 6: 60 of 61"><span class="sr-only">Run 6: 60 of 61 passed</span></li><li style="--h:98.4%" title="Run 7: 60 of 61"><span class="sr-only">Run 7: 60 of 61 passed</span></li><li class="full" style="--h:100.0%" title="Run 8: 61 of 61"><span class="sr-only">Run 8: 61 of 61 passed</span></li><li class="full" style="--h:100.0%" title="Run 9: 61 of 61"><span class="sr-only">Run 9: 61 of 61 passed</span></li><li class="full" style="--h:100.0%" title="Run 10: 63 of 63"><span class="sr-only">Run 10: 63 of 63 passed</span></li><li class="full" style="--h:100.0%" title="Run 11: 63 of 63"><span class="sr-only">Run 11: 63 of 63 passed</span></li><li style="--h:95.7%" title="Run 12: 67 of 70"><span class="sr-only">Run 12: 67 of 70 passed</span></li><li class="full" style="--h:100.0%" title="Run 13: 71 of 71"><span class="sr-only">Run 13: 71 of 71 passed</span></li><li class="full" style="--h:100.0%" title="Run 14: 71 of 71"><span class="sr-only">Run 14: 71 of 71 passed</span></li><li style="--h:98.8%" title="Run 15: 83 of 84"><span class="sr-only">Run 15: 83 of 84 passed</span></li><li style="--h:98.8%" title="Run 16: 83 of 84"><span class="sr-only">Run 16: 83 of 84 passed</span></li><li style="--h:98.8%" title="Run 17: 83 of 84"><span class="sr-only">Run 17: 83 of 84 passed</span></li><li class="full" style="--h:100.0%" title="Run 18: 84 of 84"><span class="sr-only">Run 18: 84 of 84 passed</span></li><li class="full" style="--h:100.0%" title="Run 19: 84 of 84"><span class="sr-only">Run 19: 84 of 84 passed</span></li><li class="full" style="--h:100.0%" title="Run 20: 85 of 85"><span class="sr-only">Run 20: 85 of 85 passed</span></li><li class="full" style="--h:100.0%" title="Run 21: 85 of 85"><span class="sr-only">Run 21: 85 of 85 passed</span></li><li class="full" style="--h:100.0%" title="Run 22: 86 of 86"><span class="sr-only">Run 22: 86 of 86 passed</span></li><li class="full" style="--h:100.0%" title="Run 23: 86 of 86"><span class="sr-only">Run 23: 86 of 86 passed</span></li><li class="full" style="--h:100.0%" title="Run 24: 86 of 86"><span class="sr-only">Run 24: 86 of 86 passed</span></li><li class="full" style="--h:100.0%" title="Run 25: 87 of 87"><span class="sr-only">Run 25: 87 of 87 passed</span></li><li class="full" style="--h:100.0%" title="Run 26: 87 of 87"><span class="sr-only">Run 26: 87 of 87 passed</span></li><li style="--h:96.6%" title="Run 27: 84 of 87"><span class="sr-only">Run 27: 84 of 87 passed</span></li><li style="--h:97.7%" title="Run 28: 85 of 87"><span class="sr-only">Run 28: 85 of 87 passed</span></li><li style="--h:98.9%" title="Run 29: 86 of 87"><span class="sr-only">Run 29: 86 of 87 passed</span></li><li style="--h:98.9%" title="Run 30: 86 of 87"><span class="sr-only">Run 30: 86 of 87 passed</span></li><li class="full" style="--h:100.0%" title="Run 31: 87 of 87"><span class="sr-only">Run 31: 87 of 87 passed</span></li><li style="--h:98.9%" title="Run 32: 86 of 87"><span class="sr-only">Run 32: 86 of 87 passed</span></li><li class="full" style="--h:100.0%" title="Run 33: 87 of 87"><span class="sr-only">Run 33: 87 of 87 passed</span></li><li class="full" style="--h:100.0%" title="Run 34: 87 of 87"><span class="sr-only">Run 34: 87 of 87 passed</span></li><li class="full" style="--h:100.0%" title="Run 35: 87 of 87"><span class="sr-only">Run 35: 87 of 87 passed</span></li><li class="full" style="--h:100.0%" title="Run 36: 87 of 87"><span class="sr-only">Run 36: 87 of 87 passed</span></li><li style="--h:93.4%" title="Run 37: 85 of 91"><span class="sr-only">Run 37: 85 of 91 passed</span></li><li style="--h:93.4%" title="Run 38: 85 of 91"><span class="sr-only">Run 38: 85 of 91 passed</span></li><li class="full" style="--h:100.0%" title="Run 39: 91 of 91"><span class="sr-only">Run 39: 91 of 91 passed</span></li><li class="full" style="--h:100.0%" title="Run 40: 91 of 91"><span class="sr-only">Run 40: 91 of 91 passed</span></li><li class="full" style="--h:100.0%" title="Run 41: 92 of 92"><span class="sr-only">Run 41: 92 of 92 passed</span></li><li class="full" style="--h:100.0%" title="Run 42: 92 of 92"><span class="sr-only">Run 42: 92 of 92 passed</span></li></ol><!--/QA-BARS-->
+          <p class="axis mono"><span>run 1</span><span data-qa="lastrun">run 42</span></p>
         </div>
         <p class="proof-scope">Covers function, 17 window sizes, light and dark themes, WCAG 2.1 AA accessibility, HTML validity, blocked storage, touch, keyboard and the game.</p>
       </div>
@@ -990,7 +1026,7 @@ kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); 
           <dt>actual</dt><dd>A JavaScript error halted the page, so the AI lab and the game stopped working.</dd>
           <dt>fix</dt><dd>Saved values are validated before use and ignored when malformed.</dd>
         </dl>
-        <a class="proof-more" href="qa-report.html" target="_blank" rel="noopener">See all <span data-qa="defects">28</span> defects and every test case</a>
+        <a class="proof-more" href="qa-report.html" target="_blank" rel="noopener">See all <span data-qa="defects">30</span> defects and every test case</a>
       </article>
     </div>
   </section>
@@ -1103,6 +1139,7 @@ kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); 
               <li>Tested and validated APIs with Postman and Swagger across web releases.</li>
               <li>Managed regression cycles and test documentation in Jira, and kept API docs current for coverage.</li>
               <li>Ran smoke and sanity suites on mobile and web before each release.</li>
+              <li>Tested ESP+, ASI’s platform for promotional products distributors.</li>
             </ul>
             <ul class="tags"><li>Postman</li><li>Swagger</li><li>Jira</li></ul>
           </div>
@@ -1119,6 +1156,7 @@ kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); 
               <li>Started as an SQA trainee and moved to junior engineer in four months.</li>
               <li>Built reusable Cypress automation for regression testing.</li>
               <li>Reported defects in Jira and Azure Boards with clear reproduction steps and severity.</li>
+              <li>Tested Brent Darnell International, Gitanjali Music, CattleXpert and The Caring Store end to end.</li>
               <li>Worked hands-on with Git, Postman, JMeter, OWASP ZAP, TOSCA and TestComplete.</li>
             </ul>
             <ul class="tags"><li>Cypress</li><li>Azure Boards</li><li>JMeter</li><li>OWASP ZAP</li><li>TOSCA</li></ul>
@@ -1143,9 +1181,9 @@ kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); 
   <section class="section panel-row" id="work" aria-labelledby="workTitle">
     <div class="wrap">
       <div class="section-head">
-        <p class="spec"><span class="file">work.spec.ts</span><span class="count">2 live projects, 6 work projects, 2 tools</span></p>
+        <p class="spec"><span class="file">work.spec.ts</span><span class="count">2 live projects, 6 work projects, 5 client products, 2 tools</span></p>
         <h2 id="workTitle">Things I've built and <span class="pop">shipped</span></h2>
-        <p class="lede">Two live projects first, then the QA tooling I build at work. In each pipeline, highlighted stages are the parts I built or own.</p>
+        <p class="lede">Two live projects first, then the QA tooling I build at work and the client products I tested. In each pipeline, highlighted stages are the parts I built or own.</p>
       </div>
       <div class="featured">
         <article class="feature">
@@ -1259,6 +1297,51 @@ kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); 
           </ol>
           <ul class="tags"><li>F3 QA Agent</li><li>Figma</li><li>Test design</li></ul>
         </article>
+      </div>
+
+      <div class="client-work" role="group" aria-labelledby="clientTitle">
+        <div class="client-head">
+          <p class="spec"><span class="file">clients.spec.ts</span><span class="count">5 client products</span></p>
+          <h3 id="clientTitle">Client products I <span class="pop">tested</span></h3>
+          <p>At Stixor and ASI I owned QA end to end on each of these: manual, API, database and automation testing.</p>
+        </div>
+        <ul class="client-list">
+        <li class="client">
+          <div class="case-top"><span class="kind">Web app</span><span>Stixor</span></div>
+          <h4>Brent Darnell International</h4>
+          <p>Emotional intelligence training for architecture, engineering and construction teams: learning modules, an EQ assessment, a personal learning path, quizzes, and progress synced between web and mobile.</p>
+          <ul class="tags"><li>Manual</li><li>API</li><li>Database</li><li>Automation</li></ul>
+          <a class="client-link" href="https://apps.apple.com/us/app/id6449775123" target="_blank" rel="noopener">App Store listing<span class="sr-only"> for Brent Darnell International (opens in a new tab)</span></a>
+        </li>
+        <li class="client">
+          <div class="case-top"><span class="kind">Mobile app</span><span>Stixor</span></div>
+          <h4>Gitanjali Music</h4>
+          <p>A Carnatic music learning app: email OTP sign-up, one active session per account, chapter lessons with progress, practice recordings and an activity calendar.</p>
+          <ul class="tags"><li>Manual</li><li>API</li><li>Database</li><li>Automation</li></ul>
+          <a class="client-link" href="https://apps.apple.com/ae/app/gitanjali-music/id6468365815" target="_blank" rel="noopener">App Store listing<span class="sr-only"> for Gitanjali Music (opens in a new tab)</span></a>
+        </li>
+        <li class="client">
+          <div class="case-top"><span class="kind">ERP</span><span>Stixor</span></div>
+          <h4>CattleXpert</h4>
+          <p>An ERP for cattle feedyards covering animal management, feeding, processing, health, procurement, sales, accounting integration, reporting and compliance.</p>
+          <ul class="tags"><li>Manual</li><li>API</li><li>Database</li><li>Automation</li></ul>
+          <a class="client-link" href="https://cattlexpert.com/products" target="_blank" rel="noopener">cattlexpert.com<span class="sr-only"> for CattleXpert (opens in a new tab)</span></a>
+        </li>
+        <li class="client">
+          <div class="case-top"><span class="kind">Web app</span><span>Stixor</span></div>
+          <h4>The Caring Store (CSD)</h4>
+          <p>A web app that has not launched yet, so the product details stay private for now.</p>
+          <ul class="tags"><li>Manual</li><li>API</li><li>Database</li><li>Automation</li></ul>
+          <span class="client-link muted">Pre-launch</span>
+        </li>
+        <li class="client">
+          <div class="case-top"><span class="kind">Web platform</span><span>ASI</span></div>
+          <h4>ESP+</h4>
+          <p>ASI’s platform for promotional products distributors and suppliers: a client portal, auto-branded presentations, CRM and project management, and online stores.</p>
+          <ul class="tags"><li>Manual</li><li>API</li><li>Database</li><li>Automation</li></ul>
+          <a class="client-link" href="https://asicentral.com/press-releases/asi-launches-revolutionary-esp-platform/" target="_blank" rel="noopener">About ESP+<span class="sr-only"> for ESP+ (opens in a new tab)</span></a>
+        </li>
+        </ul>
       </div>
 
       <div class="side-list" role="group" aria-label="Side projects">
@@ -1405,8 +1488,8 @@ kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); 
         </article>
         <article class="award">
           <p class="mono award-k">This site</p>
-          <h3><span data-qa="passed">87</span> of <span data-qa="tests">87</span> tests passing</h3>
-          <p><span data-qa="defects">28</span> defects found and fixed before launch. <a href="qa-report.html" target="_blank" rel="noopener">Read the report</a></p>
+          <h3><span data-qa="passed">92</span> of <span data-qa="tests">92</span> tests passing</h3>
+          <p><span data-qa="defects">30</span> defects found and fixed before launch. <a href="qa-report.html" target="_blank" rel="noopener">Read the report</a></p>
         </article>
       </div>
       <h3 class="sr-only">Certifications</h3>
@@ -2428,6 +2511,7 @@ kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); 
     const bar = $('#hBar'), nowEl = $('#hNow'), nameEl = $('#hName'), totalEl = $('#hTotal');
     const header = $('.site-header');
     const panels = $$('#hTrack > section');
+    const footer = $('.site-footer');
     const names = { top: 'scroll to travel', proof: 'qa report', about: 'about', now: 'now', experience: 'experience', work: 'work', lab: 'ai lab', quests: 'side quests', skills: 'skills', wins: 'wins', contact: 'contact', play: 'play' };
     totalEl.textContent = String(panels.length).padStart(2, '0');
     const mqH = window.matchMedia('(min-width: 1024px) and (min-height: 700px)');
@@ -2447,6 +2531,7 @@ kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); 
       anchorIdx = i; anchorDelta = current - panels[i].offsetLeft;
       if (i !== idx) {
         idx = i;
+        root.classList.toggle('h-end', i === panels.length - 1);
         nowEl.textContent = String(i + 1).padStart(2, '0');
         nameEl.textContent = names[panels[i].id] || panels[i].id;
         const id = panels[i].id === 'top' ? '' : '#' + panels[i].id;
@@ -2467,6 +2552,7 @@ kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); 
       const hh = header.offsetHeight;
       const ph = window.innerHeight - hh;
       root.style.setProperty('--panel-h', ph + 'px');
+      root.style.setProperty('--footer-h', footer.offsetHeight + 'px');
       dist = Math.max(1, track.scrollWidth - pin.clientWidth);
       main.style.height = (ph + dist) + 'px';
       start = main.getBoundingClientRect().top + window.scrollY - hh;
@@ -2508,11 +2594,14 @@ kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); 
       if (on) { measure(); if (keep) goTo(keep, true); }
       else {
         main.style.height = ''; pin.scrollLeft = 0; grid.style.transform = ''; root.style.removeProperty('--panel-h');
+        root.classList.remove('h-end'); root.style.removeProperty('--footer-h');
         if (keep && keep.id !== 'top') keep.scrollIntoView({ behavior: 'instant' });
         idx = -1;
       }
     }
 
+    // Keyboard or screen-reader focus landing in the footer travels to the end, where the footer is shown.
+    footer.addEventListener('focusin', () => { if (on && idx !== panels.length - 1) goTo(panels[panels.length - 1], true); });
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', () => { if (on) measure(); });
     if ('ResizeObserver' in window) new ResizeObserver(() => { if (on) measure(); }).observe(track);
