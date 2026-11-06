@@ -783,6 +783,7 @@ kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); 
 .is-h .thesis { margin-top: 2.4vh; }
 .is-h .hero .lede { margin-top: 1.6vh; }
 .is-h .cta-row { margin-top: 2.6vh; }
+.is-h .hero .btn-primary svg { transform: rotate(-90deg); }
 .is-h .facts { margin-top: 3vh; padding-top: 2vh; }
 .is-h .h-hint { display: inline-flex; align-items: center; gap: 8px; margin-top: 2.4vh; font: 500 0.82rem var(--font-mono); color: var(--ink-2); }
 .is-h .h-hint svg { width: 16px; height: 16px; }
@@ -2552,7 +2553,20 @@ kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--line-strong); 
       apply();
       if (pending && !raf && Math.abs(window.scrollY - yFor(pending)) < 1) pending = null;
     }
-    function onScroll() { if (!on) return; target = clampT(); if (!raf) raf = requestAnimationFrame(loop); }
+    // Section snap: when scrolling stops near the start of a section, glide to it. Stopping mid-section stays put.
+    let snapT = 0, snapLock = 0, ptrDown = false;
+    function snapNow() {
+      if (!on) return;
+      if (ptrDown || performance.now() < snapLock) { schedSnap(); return; }
+      const x = clampT();
+      let best = null, bd = Infinity;
+      panels.forEach(pn => { const px = Math.min(pn.offsetLeft, dist), d = Math.abs(px - x); if (d < bd) { bd = d; best = pn; } });
+      if (best && bd > 2 && bd < window.innerWidth * 0.3) { snapLock = performance.now() + 900; goTo(best); }
+    }
+    function schedSnap() { clearTimeout(snapT); snapT = setTimeout(snapNow, 170); }
+    window.addEventListener('pointerdown', () => { ptrDown = true; }, { passive: true });
+    window.addEventListener('pointerup', () => { ptrDown = false; schedSnap(); }, { passive: true });
+    function onScroll() { if (!on) return; target = clampT(); if (!raf) raf = requestAnimationFrame(loop); schedSnap(); }
     function measure() {
       if (!on) return;
       const hh = header.offsetHeight;
